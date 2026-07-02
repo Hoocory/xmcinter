@@ -987,7 +987,7 @@ def line_emissivities(kT,tolerance=0.05,**fetchargs):
     
     #----Read in lines----
     linefile = os.path.dirname(__file__)+'/xraylines_atomdb307.txt'
-    atomdb = pd.read_table(linefile,sep='\s+',comment='#',engine='python')
+    atomdb = pd.read_table(linefile,sep=r'\s+',comment='#',engine='python')
    
     #----Check array type, convert to dataframe if needed----
     if not isinstance(kT,pd.DataFrame):

@@ -33,10 +33,10 @@ dfb = pd.read_table('/data/drive1/staging/CTB109_0038140101_b_b100_EPIC/analysis
 
 #### Check number of blobs
 nblobs = len(dfa.index)
-print "Total Number of Blobs in A = ",len(dfa.index)
+print("Total Number of Blobs in A = ",len(dfa.index))
 
 nblobs = len(dfb.index)
-print "Total Number of Blobs in B = ",len(dfb.index)
+print("Total Number of Blobs in B = ",len(dfb.index))
 
 # (re)define blobcols to include new columns
 blobcolsa = [c for c in dfa.columns if 'blob' in c]

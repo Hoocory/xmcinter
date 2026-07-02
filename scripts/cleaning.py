@@ -39,8 +39,8 @@ itermin = 3500
 itermax = None
 # determine converged chi2/dof
 sf = xw.filterblobs(sf,'iteration',minvals=itermin,maxvals=itermax)
-print xw.weighted_median(sf['redchi2']) 
-print max(sf.iteration)
+print(xw.weighted_median(sf['redchi2']))
+print(max(sf.iteration))
 
 #### Check spectrum
 sfig = xplt.standard_spectra(runpath=runpath,display=display,itmin=itermin,
@@ -79,7 +79,7 @@ dfall = pd.read_table('deconvolution_merged_iter3500-9292.txt',index_col=0,sep=r
 
 #### Check number of blobs
 nblobs = len(dfall.index)
-print "Total Number of Blobs = ",len(dfall.index)
+print("Total Number of Blobs = ",len(dfall.index))
 
 # (re)define blobcols to include new columns
 blobcols = [c for c in dfall.columns if 'blob' in c]
@@ -100,11 +100,11 @@ sfig = xplt.standard_spectra(runpath='../',display=True,itmin=itermin,
 #### Clean by nH-kT
 dfgood = nHkTthresh(dfall)
 ngoodblobs = len(dfgood.index)
-print "Number all blobs = ",nblobs
-print "Number good blobs = ",ngoodblobs
-print "Fraction good blobs = ",float(ngoodblobs)/float(nblobs)
-print "Total EM = ",dfall.blob_em.sum()/niter
-print "Total Good EM = ",dfgood.blob_em.sum()/niter
+print("Number all blobs = ",nblobs)
+print("Number good blobs = ",ngoodblobs)
+print("Fraction good blobs = ",float(ngoodblobs)/float(nblobs))
+print("Total EM = ",dfall.blob_em.sum()/niter)
+print("Total Good EM = ",dfgood.blob_em.sum()/niter)
 
 #### Compare Spectra of Good and Bad Blobs
 

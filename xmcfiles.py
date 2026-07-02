@@ -141,7 +141,7 @@ def merge_output(runpath='./',filetype='deconvolution',save=True,sep='\t',
     # --Initialize dataframe with first file --
     
     # - read file - 
-    datatable = pd.read_table(runpath+'/'+filelist[0],sep='\s+',header=None)
+    datatable = pd.read_table(runpath+'/'+filelist[0],sep=r'\s+',header=None)
 
     # - check for nans and drop them -
     datatable = remove_nans(datatable,filename=filelist[0])
@@ -164,7 +164,7 @@ def merge_output(runpath='./',filetype='deconvolution',save=True,sep='\t',
     # -- Loop through files and concatenate into single dataframe --
     for f in filelist[1:]:        
         if os.stat(runpath+'/'+f).st_size > 0:
-            newframe = pd.read_table(runpath+'/'+f,sep='\s+',
+            newframe = pd.read_table(runpath+'/'+f,sep=r'\s+',
                                      header=None)
             iternum = int(f.split('.')[-1]) # returns integer
             if len(parnames) > 0: newframe.columns=parnames
@@ -335,8 +335,9 @@ def read_spectra(runpath='../',itmin=1,itmax=None,logbins=False,
 
     # set file name type
     if legacy is True:
-        itmin = itmin/100
-        if itmax is not None: itmax = itmax/100
+        # Preserve Python 2 integer-division behavior for legacy names.
+        itmin = int(itmin//100)
+        if itmax is not None: itmax = int(itmax//100)
 
     if itmax is None:
 #        itmax = len(ls_to_list(runpath,'spectrum*')) - 1
@@ -366,7 +367,7 @@ def read_spectra(runpath='../',itmin=1,itmax=None,logbins=False,
                 xlabel = 'Wavelength (Angstroms)'
  
             if sm == 0:
-                wave = pd.Series(wave.byteswap().newbyteorder(),
+                wave = pd.Series(wave.byteswap().view(wave.dtype.newbyteorder()),
                                  name=xlabel)
             else:
                 wave = pd.Series(wave+0,name=xlabel)
@@ -375,8 +376,8 @@ def read_spectra(runpath='../',itmin=1,itmax=None,logbins=False,
             # y units are counts per bin
             if isinstance(bins,float): # assume binsize, convert
                                        # to number bins
-                nbins = np.ceil((np.max(wave.values)-
-                        np.min(wave.values))/bins)    
+                nbins = int(np.ceil((np.max(wave.values)-
+                        np.min(wave.values))/bins))
 
             y,yerrors,yedges = \
                        make_histogram(wave,bins=nbins,
@@ -418,8 +419,8 @@ def read_spectra(runpath='../',itmin=1,itmax=None,logbins=False,
             # y units are counts per bin
             if isinstance(bins,float): # assume binsize, convert
                                        # to number bins
-                nbins = np.ceil((np.max(wave.values)-
-                        np.min(wave.values))/bins)    
+                nbins = int(np.ceil((np.max(wave.values)-
+                        np.min(wave.values))/bins))
 
             y,yerrors,yedges = \
                        make_histogram(wave,bins=nbins,
@@ -441,8 +442,8 @@ def read_spectra(runpath='../',itmin=1,itmax=None,logbins=False,
         # y units are counts per bin
         if isinstance(bins,float): # assume binsize, convert
             # to number bins
-            nbins = np.ceil((np.max(wave_avg.values)-
-                            np.min(wave_avg.values))/bins)    
+            nbins = int(np.ceil((np.max(wave_avg.values)-
+                            np.min(wave_avg.values))/bins))
                 
         y,yerrors,yedges = make_histogram(wave_avg,bins=nbins,
                                           logbins=logbins,

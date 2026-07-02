@@ -223,7 +223,6 @@ def make_map(indata,outfile=None,paramname='blob_kT',paramweights=None,
     from .wrangle import filterblobs
     from .astro_utilities import gaussian_volume
     import time
-    from . import plots as xplt
     
     #----Set any defaults----
     if withsignificance is True: witherror = True
@@ -375,13 +374,14 @@ def make_map(indata,outfile=None,paramname='blob_kT',paramweights=None,
     #-number of map layers (one per iteration) and number of pixels-
     niter = np.unique(df['iteration']).size
     if nlayers is None:
-        nlayers = niter/itmod
+        # Preserve Python 2 integer-division behavior for layer sampling.
+        nlayers = int(niter//itmod)
         if nlayers == 0: 
             nlayers = 1
     else:
         if nlayers > niter: #max nlayers = number iterations
             nlayers = niter
-        itmod = niter/nlayers
+        itmod = int(niter//nlayers)
     nbins_x = int(np.floor((xmax - xmin)/binsize))
     nbins_y = int(np.floor((ymax - ymin)/binsize))
     print('nbins_x, nbins_y, nlayers = ',nbins_x,nbins_y,nlayers)
@@ -485,7 +485,8 @@ def make_map(indata,outfile=None,paramname='blob_kT',paramweights=None,
         #--Rotate Image--
         if rotation != 0.0:
             themap = rotate(themap,rotation,axes=(0,1))
-            errmap = rotate(errmap,rotation,axes=(0,1))
+            if errmap is not None:
+                errmap = rotate(errmap,rotation,axes=(0,1))
         #after testing, add cval=np.nan argument                
 
         #--Save images to list--
@@ -519,7 +520,7 @@ def make_map(indata,outfile=None,paramname='blob_kT',paramweights=None,
         errmap=errimgs[p]
 
         #--Apply significance threshold--
-        if sigthreshparam is None:
+        if (sigthresh != 0.0) and (sigthreshparam is None):
             sigmap = abs(imgs[p])/errimgs[p]
 
             # - set pixels with significance < threshold to Nan - 
@@ -580,7 +581,7 @@ def make_map(indata,outfile=None,paramname='blob_kT',paramweights=None,
         hdr['HISTORY']=history4
         hdu = fits.PrimaryHDU(themap,header=hdr)
 
-        hdu.writeto(outfiles[p],clobber=clobber)
+        hdu.writeto(outfiles[p],overwrite=clobber)
 
         if witherror is True:
             hdr=fits.Header()
@@ -902,7 +903,6 @@ def iteration_image(data,params,weights,nbins_x,nbins_y,binsize,xmin,ymin,
     """Function to combine blobs from single iteration into 1 image."""
     from .wrangle import weighted_median, weighted_std
     from .astro_utilities import gaussian_volume
-    from . import plots as xplt
 
     #--initialize stack of 2D images, one for each parameter--
     iterimages = np.zeros((nbins_x,nbins_y,len(params)))

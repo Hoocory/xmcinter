@@ -12,6 +12,5 @@ outroot = './'
 
 import bokeh
 import bokeh.plotting as bplt
-import bokeh.charts as bchart
 from bokeh.layouts import gridplot
 from bokeh.models import ColumnDataSource

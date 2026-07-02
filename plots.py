@@ -21,10 +21,56 @@ import pandas as pd
 import numpy as np
 import bokeh
 import bokeh.plotting as bplt
-import bokeh.charts as bchart
 from bokeh.layouts import gridplot
 from .wrangle import filterblobs,make_histogram,normalize_histogram,weighted_median
 from .xmcfiles import fake_deconvolution,merge_output
+
+
+def _modern_plot_kwargs(kwargs):
+    """Translate old Bokeh keyword names to the modern plotting API."""
+    kwargs = dict(kwargs)
+    if 'plot_width' in kwargs:
+        kwargs.setdefault('width', kwargs.pop('plot_width'))
+    if 'plot_height' in kwargs:
+        kwargs.setdefault('height', kwargs.pop('plot_height'))
+    if kwargs.pop('webgl', False):
+        kwargs.setdefault('output_backend', 'webgl')
+    return kwargs
+
+
+def _figure(**kwargs):
+    return bplt.figure(**_modern_plot_kwargs(kwargs))
+
+
+def _gridplot(children, **kwargs):
+    return gridplot(children, **_modern_plot_kwargs(kwargs))
+
+
+def _step_plot(data, x, y, legend=True, color=None, dash=None, ylabel=None,
+               y_mapper_type='linear', x_mapper_type='linear', **kwargs):
+    """Small replacement for the removed legacy Step chart helper."""
+    if not isinstance(y, list):
+        y = [y]
+    if not isinstance(color, list):
+        color = [color]*len(y)
+    if not isinstance(dash, list):
+        dash = [dash or 'solid']*len(y)
+
+    fig = _figure(x_axis_type=x_mapper_type, y_axis_type=y_mapper_type,
+                  **kwargs)
+    fig.xaxis.axis_label = x
+    if ylabel is not None:
+        fig.yaxis.axis_label = ylabel
+
+    for i, column in enumerate(y):
+        line_kwargs = {'line_dash': dash[i]}
+        if color[i] is not None:
+            line_kwargs['line_color'] = color[i]
+        if legend is True:
+            line_kwargs['legend_label'] = str(column)
+        fig.step(data[x], data[column], mode='after', **line_kwargs)
+
+    return fig
 
 #----------------------------------------------------------
 def logaxis(minval,maxval,limit=2.0):
@@ -114,7 +160,7 @@ def chi2(runpath='./',itmin=0,itmax=None,outfile='chi2_vs_iteration.html',
         display = True
         bplt.output_notebook()
     TOOLS = "pan,wheel_zoom,box_zoom,reset,save,box_select,lasso_select"
-    fig = bplt.Figure(tools=TOOLS)
+    fig = _figure(tools=TOOLS)
     fig.xaxis.axis_label='iteration'
     fig.yaxis.axis_label='chi2/dof'
 
@@ -318,9 +364,9 @@ def scatter(inframe,x,y,sampling=2000,agg=None,aggcol=None,save=True,
 #----Set up Plot----
     if tools is None: 
         tools = "pan,wheel_zoom,box_zoom,reset,save,box_select"
-    fig = bplt.Figure(tools=tools,width=width,height=height,
-                      x_axis_type=x_axis_type,y_axis_type=y_axis_type,
-                      y_range=y_rng,x_range=x_rng,webgl=True)
+    fig = _figure(tools=tools,width=width,height=height,
+                  x_axis_type=x_axis_type,y_axis_type=y_axis_type,
+                  y_range=y_rng,x_range=x_rng,webgl=True)
     fig.xaxis.axis_label=x
     fig.yaxis.axis_label=y
 
@@ -775,9 +821,9 @@ def histogram(dataseries,weights=None,bins=100,save=True,display=True,
             bplt.output_notebook()
 
     if infig is None:
-        fig = bplt.Figure(tools=tools,plot_width=width,plot_height=height,
-                          x_axis_type=x_axis_type,x_range=xaxisrng,
-                          y_range=yaxisrng,y_axis_type=y_axis_type)
+        fig = _figure(tools=tools,plot_width=width,plot_height=height,
+                      x_axis_type=x_axis_type,x_range=xaxisrng,
+                      y_range=yaxisrng,y_axis_type=y_axis_type)
         fig.xaxis.axis_label=dataseries.name
         
         if weights is not None:
@@ -824,8 +870,10 @@ def histogram(dataseries,weights=None,bins=100,save=True,display=True,
 
 #----Plot the histogram----
 #    print 'quad = ',binedges,histy
+    if legend is not None:
+        kwargs['legend_label'] = legend
     h = fig.quad(top=histy,bottom=0,left=binedges[:-1],right=binedges[1:],
-                 color=color,alpha=alpha,legend=legend,**kwargs)
+                 color=color,alpha=alpha,**kwargs)
     
 #----Plot Errorbars----
     if iterations is not None:
@@ -1099,7 +1147,7 @@ def histogram_grid(dframes,columns=None,weights=None,bins=100,
 #----Create empty figure with legend only----
 
     # create empty plot
-    newfig = bplt.figure(plot_width=width,plot_height=height)
+    newfig = _figure(plot_width=width,plot_height=height)
 
     # create labels (one per dframe)
     for i in range(len(dframes)):
@@ -1160,7 +1208,7 @@ def histogram_grid(dframes,columns=None,weights=None,bins=100,
 
 #----Plot histograms----
 #    p = gridplot(figarr)
-    p = gridplot(figlist,ncols=ncols,plot_width=width,plot_height=height)
+    p = _gridplot(figlist,ncols=ncols,plot_width=width,plot_height=height)
     if display is True:
         bplt.show(p)
     else:
@@ -1309,7 +1357,6 @@ def spectrum(runpath='../',smin=0,smax=None,datacolor='black',
     #----Import Modules----
     import os
     import astropy.io.fits as fits
-    from bokeh.charts import Step
     from bokeh.models.ranges import Range1d
     from .file_utilities import ls_to_list
 
@@ -1374,7 +1421,8 @@ def spectrum(runpath='../',smin=0,smax=None,datacolor='black',
                 print("Warning: "+modelspecfile+" does not exist. Skipping.")
 
     #----Convert to pandas Series----
-    data_wave = pd.Series(data_wave.byteswap().newbyteorder(),name='Energy (keV)')    
+    data_wave = pd.Series(data_wave.byteswap().view(data_wave.dtype.newbyteorder()),
+                          name='Energy (keV)')
     if model is True:
         model_wave_avg = pd.Series(model_wave_avg+0,name='Energy (keV)')
         model_wave = pd.Series(model_wave+0,name='Energy (keV)')
@@ -1384,8 +1432,8 @@ def spectrum(runpath='../',smin=0,smax=None,datacolor='black',
     # y units are counts per bin (per observation exposure or iteration)
     
     if isinstance(bins,float): # assume binsize, convert to number bins
-        bins = np.ceil((np.max(data_wave.values)-
-                        np.min(data_wave.values))/bins)    
+        bins = int(np.ceil((np.max(data_wave.values)-
+                        np.min(data_wave.values))/bins))
 
     datay,dataerrors,dataedges = \
         make_histogram(data_wave,bins=bins,
@@ -1457,19 +1505,19 @@ def spectrum(runpath='../',smin=0,smax=None,datacolor='black',
     #----Plot Spectra as Step Chart----
     if model is True:
         if smin != smax: # plotting more than one iteration
-            specframes = pd.DataFrame({'Data':datay,xlabel:dataedges[:-1],
+            specframes = pd.DataFrame({datalabel:datay,xlabel:dataedges[:-1],
                                avglabel:avgmodely,lastlabel:lastmodely})
 
-            step = Step(specframes,x=xlabel,y=[datalabel,avglabel,lastlabel],
+            step = _step_plot(specframes,x=xlabel,y=[datalabel,avglabel,lastlabel],
                 color=[datacolor,modelcolor,lastmodelcolor],legend=True,
                 y_mapper_type=y_axis_type,x_mapper_type=x_axis_type,
                 dash=['solid','solid','dashed'],
                 plot_width=width,plot_height=height)
         else:
-            specframes = pd.DataFrame({'Data':datay,xlabel:dataedges[:-1],
+            specframes = pd.DataFrame({datalabel:datay,xlabel:dataedges[:-1],
                                avglabel:avgmodely})
 
-            step = Step(specframes,x=xlabel,y=[datalabel,avglabel],
+            step = _step_plot(specframes,x=xlabel,y=[datalabel,avglabel],
                 color=[datacolor,modelcolor],legend=True,
                 y_mapper_type=y_axis_type,x_mapper_type=x_axis_type,
                 dash=['solid','solid'],
@@ -1479,7 +1527,7 @@ def spectrum(runpath='../',smin=0,smax=None,datacolor='black',
     else:
         specframes = pd.DataFrame({datalabel:datay,xlabel:dataedges[:-1]})
 
-        step = Step(specframes,x=xlabel,y=[datalabel],
+        step = _step_plot(specframes,x=xlabel,y=[datalabel],
                 color=[datacolor],legend=True,
                 y_mapper_type=y_axis_type,x_mapper_type=x_axis_type,
                 dash=['solid'],
@@ -1488,7 +1536,7 @@ def spectrum(runpath='../',smin=0,smax=None,datacolor='black',
     step.x_range=Range1d(*x_range)
     step.y_range=Range1d(*y_range)
     step.legend.location='top_right'
-    step.ylabel = 'counts'
+    step.yaxis.axis_label = 'counts'
 
     #----Plot Errorbars----
     if model is True:
@@ -1607,32 +1655,32 @@ def trace(inframe,iteration_type = 'median',itercol = 'iteration',
         # set up functions to use
         if iteration_type == 'median':
             def func(g):
-                w = inframe.ix[g.index][weights]
+                w = inframe.loc[g.index, weights]
                 return weighted_median(g,weights=w)
         elif iteration_type == 'average':
             def func(g):
-                w = inframe.ix[g.index][weights]
+                w = inframe.loc[g.index, weights]
                 return np.average(g,weights=w)
         elif iteration_type == 'stdev':
             def func(g):
-                w = inframe.ix[g.index][weights]
+                w = inframe.loc[g.index, weights]
                 return weighted_std(g,weights=w)
         elif iteration_type == 'total':
             def func(g):
-                w = inframe.ix[g.index][weights]
+                w = inframe.loc[g.index, weights]
                 return np.sum(g*w)/np.sum(w)
         elif iteration_type is None:
             print ("Warning: iteration_type = None but weights != None. "
                    "If using weights, must aggregrate iterations. Setting"
                    " iteration_type='median'.")
             def func(g):
-                w = inframe.ix[g.index][weights]
+                w = inframe.loc[g.index, weights]
                 return weighted_median(g,weights=w)
         else:
             print ("Warning: Unrecognized iteration_type. Using"
                    " iteration_type='median'")
             def func(g):
-                w = inframe.ix[g.index][weights]
+                w = inframe.loc[g.index, weights]
                 return weighted_median(g,weights=w)
             
         # group and aggregrate
@@ -1671,7 +1719,7 @@ def trace(inframe,iteration_type = 'median',itercol = 'iteration',
         figlist=figlist+[newfig]    
 
     #----Plot Grid of Figures----
-    p = gridplot(figlist,ncols=ncols,plot_width=width,plot_height=height)
+    p = _gridplot(figlist,ncols=ncols,plot_width=width,plot_height=height)
 
     if save is True:
         if display is True:
@@ -1849,11 +1897,9 @@ def agg_lines(groupeddf,bins,units='energy'):
     Called by spectrum()
     """
 
-    # empty dataframe for output
-    outdf=pd.DataFrame(data=np.zeros((0,3)),columns=[units,'label',
-                                                     'emissivity'])
-    iondf=pd.DataFrame(data=np.zeros((0,3)),columns=[units,'label',
-                                                     'emissivity'])
+    # empty row collections for output
+    outrows = []
+    ionrows = []
 
     # merge lines by element and ionization stage
     for ion,grp in groupeddf:
@@ -1864,9 +1910,9 @@ def agg_lines(groupeddf,bins,units='energy'):
         for b in range(len(y)):
             if y[b] > 0:
                 lab = ion[0]+' '+ion[1]
-                iondf=iondf.append(pd.DataFrame([[x[b],lab,y[b]]],
-                                          columns=[units,'label',
-                                                   'emissivity']))
+                ionrows.append([x[b], lab, y[b]])
+
+    iondf = pd.DataFrame(ionrows, columns=[units,'label','emissivity'])
                 
     # check for lines from different ions or ionization stages in 
     # the same energy bin and combine
@@ -1883,10 +1929,9 @@ def agg_lines(groupeddf,bins,units='energy'):
                     lab = lab+', '+l.label
                 else:
                     lab = l.label
-            outdf=outdf.append(pd.DataFrame([[x[b],lab,y[b]]],
-                                            columns=[units,'label',
-                                                     'emissivity']))
+            outrows.append([x[b], lab, y[b]])
 
+    outdf = pd.DataFrame(outrows, columns=[units,'label','emissivity'])
     outdf.reset_index(inplace=True,drop=True)
     return outdf
 
@@ -2106,7 +2151,6 @@ def spectra(spectra,colors=['black','steelblue','firebrick'],
     #----Import Modules----
     import os
     import astropy.io.fits as fits
-    from bokeh.charts import Step,color
     from bokeh.models.ranges import Range1d
     from .file_utilities import ls_to_list
     from bokeh.models import PrintfTickFormatter
@@ -2207,7 +2251,7 @@ def spectra(spectra,colors=['black','steelblue','firebrick'],
     
     # To Do - figure out how to specify a color for each column
     #         (turns out it is extremely difficult)
-    step = Step(specframes,x=xlabel,y=labels,
+    step = _step_plot(specframes,x=xlabel,y=labels,
                 legend=True,color=colors,
                 y_mapper_type=y_axis_type,x_mapper_type=x_axis_type,
                 dash=dashes,ylabel='counts',

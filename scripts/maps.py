@@ -24,7 +24,7 @@
 # edit filename as appropriate
 df = pd.read_table('deconvolution_merged_iter3500-9292.txt',index_col=0,sep=r'\s+',engine='python',comment='#')
 
-print "Total Number of Blobs = ",len(df.index)
+print("Total Number of Blobs = ",len(df.index))
 
 # (re)define blobcols to include new columns
 blobcols = [c for c in df.columns if 'blob' in c]

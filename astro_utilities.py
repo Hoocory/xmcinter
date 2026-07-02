@@ -209,7 +209,7 @@ def transfer_header(sourcefile,targetfile,newfile):
   target_hdus.close()
   
   #-write to file-
-  fits.writeto(newfile,new_img,new_hdr,clobber=True)
+  fits.writeto(newfile,new_img,new_hdr,overwrite=True)
 
   return newfile
 
@@ -989,14 +989,14 @@ def redshift_line(line,z,fromunit='angstroms'):
   """Calculate observed wavelength or energy of a line"""
 
   # convert to wavelength in angstroms
-  if fromunit is 'keV':
+  if fromunit == 'keV':
     line = angstroms2keV(line)
 
   # shift wavelength
   newline = line*(1.0+z)
 
   # convert back to energy in keV
-  if fromunit is 'keV':
+  if fromunit == 'keV':
     newline = angstroms2keV(line)
 
   return newline
@@ -1055,7 +1055,7 @@ def fetch_lines(redshift=0.0,kT_range=(0.1,10.0),
   #----Read in lines----
   if atomdb is None:
     linefile = os.path.dirname(__file__)+'/xraylines_atomdb307.txt'
-    linedf = pd.read_table(linefile,sep='\s+',comment='#',engine='python')
+    linedf = pd.read_table(linefile,sep=r'\s+',comment='#',engine='python')
   else:
     linedf = atomdb
 
@@ -1107,7 +1107,7 @@ def distance2redshift(d,fromunit='kpc'):
   """Convert a distance to a redshift"""
 
   # convert to kpc
-  if fromunit is not 'kpc':
+  if fromunit != 'kpc':
     convert_distance(d,fromunit,'kpc')
 
   print("ERROR: This function is under construction.")
@@ -1264,7 +1264,7 @@ def get_effective_area(energy,area=None):
     # look up closest value
     area['diff'] = [abs(energy-i) for i in list(area['0'])]
     nearest_energy = area['diff'].idxmin(axis=0)
-    netarea = area.ix[nearest_energy,'total']
+    netarea = area.loc[nearest_energy,'total']
 
     return netarea
    

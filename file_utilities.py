@@ -229,7 +229,7 @@ def file_lines(infile,comment=''):
   return counter
 
 #----------------------------------------------------------
-def parse_file_line(infile,delimiter=',;\s\t'):
+def parse_file_line(infile,delimiter=r',;\s\t'):
   """
   Author: Kari A. Frank 
   Date: March 20, 2014
@@ -242,7 +242,7 @@ def parse_file_line(infile,delimiter=',;\s\t'):
                   comma, tab, and semicolon.  Can provide more than
                   one delimiter character in the string.  Spaces and 
                   tabs should be given in regular expression syntax,
-                  \s and \t.
+                  \\s and \\t.
 
   Output:  
     returns string list of 'words' in the line.
