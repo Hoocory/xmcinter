@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "xmcinter"
+version = "1.0.0"
+description = "XMC analysis interface"
+readme = "README.md"
+requires-python = ">=3.10"
+
+[tool.setuptools]
+package-dir = {"" = 'src'}
+
+[tool.setuptools.packages.find]
+where = ["src"]
