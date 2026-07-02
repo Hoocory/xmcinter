@@ -8,6 +8,30 @@ The xmcinter python package requires the following third-party packages:
 - bokeh
 - scipy
 
+Python 3 setup notes:
+- Install the Python dependencies with:
+
+  pip install -r requirements.txt
+
+- Add the parent directory of xmcinter to PYTHONPATH. For example, if this
+  checkout is /Users/kakigi/Documents/xmcinter:
+
+  export PYTHONPATH=/Users/kakigi/Documents:$PYTHONPATH
+
+- Run the import smoke test with:
+
+  python scripts/smoke_imports.py
+
+- The checked-in gaussian.so may not match your operating system or CPU.
+  Rebuild it locally before using make_map(..., cint=True), for example:
+
+  clang -shared -fPIC -o gaussian.so gaussian.c
+
+  Or pass cint=False to make_map().
+
+- IDL map wrappers, external xmc execution, DS9, XMM-SAS tools, and real XMC
+  run products are still external/manual dependencies.
+
 You may need to add xmcinter's parent directory to your PYTHONPATH, e.g.,
 if you placed xmcinter inside ~/python_programs/,
 
@@ -66,7 +90,7 @@ df,sf = xd.check(runpath='../',itmin=500)
 sf = xplt.chi2(runpath='../')
 sf = xw.filterblobs(sf,'iteration',minvals=1000)
 medchi2 = xw.weighted_median(sf['redchi2'])
-print medchi2
+print(medchi2)
 
 # filter by iteration and add emission measure, blob_sigma 
 # (change itmin and distance)
