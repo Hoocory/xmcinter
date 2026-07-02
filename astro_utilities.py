@@ -829,13 +829,13 @@ def xspec_abund_to_nomoto(specZ,refZ,specZerr=0.0,refZerr=0.0):
 
   #--make sure given tuples are of correct form--
   if isinstance(specZerr,tuple) and (len(specZerr) > 2): 
-    print "ERROR: specZerr tuple has more than 2 elements."
+    print("ERROR: specZerr tuple has more than 2 elements.")
     return None
   if isinstance(specZerr,tuple) and (len(specZerr) == 1): 
     specZerr = (specZerr[0],specZerr[0]) # assume symmetric errors
 
   if isinstance(refZerr,tuple) and (len(refZerr) > 2):
-    print "ERROR: refZerr tuple has more than 2 elements."
+    print("ERROR: refZerr tuple has more than 2 elements.")
     return None
   if isinstance(refZerr,tuple) and (len(refZerr) == 1):
     refZerr = (refZerr[0],refZerr[0]) # assume symmetric errors
@@ -888,12 +888,12 @@ def ratio_error_bars(top,bottom,top_low,toperr=0.0,bottomerr=0.0):
 
   #--make sure given tuples are of correct form--
   if isinstance(toperr,tuple) and (len(toperr) > 2):
-    print "ERROR: toperr tuple has more than 2 elements."
+    print("ERROR: toperr tuple has more than 2 elements.")
     return
   if isinstance(toperr,tuple) and (len(toperr) == 1):
     toperr = (toperr[0],toperr[0]) # assume symmetric errors
   if isinstance(bottomerr,tuple) and (len(bottomerr) > 2):
-    print "ERROR: bottomerr tuple has more than 2 elements."
+    print("ERROR: bottomerr tuple has more than 2 elements.")
     return
   if isinstance(bottomerr,tuple) and (len(bottomerr) == 1):
     bottomerr = (bottomerr[0],bottomerr[0]) # assume symmetric errors
@@ -980,7 +980,7 @@ def show_xray_lines(**fetchargs):
   linedf = fetch_lines(**fetchargs)
 
   #--print line information--
-  print linedf.head(len(linedf.index))
+  print(linedf.head(len(linedf.index)))
 
   return linedf
 
@@ -1110,7 +1110,7 @@ def distance2redshift(d,fromunit='kpc'):
   if fromunit is not 'kpc':
     convert_distance(d,fromunit,'kpc')
 
-  print "ERROR: This function is under construction."
+  print("ERROR: This function is under construction.")
   
 
   return z
@@ -1185,7 +1185,7 @@ def abs_cross_section(energy):
     """
 
     if energy < 0.03:
-      print "ERROR: energy is outside valid range (0.03-10.0 keV)"
+      print("ERROR: energy is outside valid range (0.03-10.0 keV)")
       return None
     elif energy < 0.1:
       c = [17.3,608.1,-2150.0]
@@ -1216,7 +1216,7 @@ def abs_cross_section(energy):
     elif energy <= 10.00:
       c = [701.2,25.2,0.0]
     else:
-      print "ERROR: energy is outside valid energy range (0.03-10 keV)"
+      print("ERROR: energy is outside valid energy range (0.03-10 keV)")
       return None
       
     sigma = (c[0]+c[1]*energy+c[2]*energy**2.0)*(energy**-3.0)*(10.0**-24.0)

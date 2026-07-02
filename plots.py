@@ -23,8 +23,8 @@ import bokeh
 import bokeh.plotting as bplt
 import bokeh.charts as bchart
 from bokeh.layouts import gridplot
-from wrangle import filterblobs,make_histogram,normalize_histogram,weighted_median
-from xmcfiles import fake_deconvolution,merge_output
+from .wrangle import filterblobs,make_histogram,normalize_histogram,weighted_median
+from .xmcfiles import fake_deconvolution,merge_output
 
 #----------------------------------------------------------
 def logaxis(minval,maxval,limit=2.0):
@@ -92,7 +92,7 @@ def chi2(runpath='./',itmin=0,itmax=None,outfile='chi2_vs_iteration.html',
     """
 
 #----Import Modules----
-    from xmcfiles import merge_output
+    from .xmcfiles import merge_output
 #    import bokeh
 #    from bokeh.plotting import figure, output_file, show
     #from bokeh.mpl import to_bokeh
@@ -266,7 +266,7 @@ def scatter(inframe,x,y,sampling=2000,agg=None,aggcol=None,save=True,
                  'dsstd':ds.std,'dscount_cat':ds.count_cat,
                  'dssummary':ds.summary}
         if agg not in fdict:
-            print "Warning: "+agg+" not a valid agg option. Using agg='dscount' instead"
+            print("Warning: "+agg+" not a valid agg option. Using agg='dscount' instead")
             agg = 'dscount'
 
         if aggcol is not None:
@@ -668,7 +668,7 @@ def histogram(dataseries,weights=None,bins=100,save=True,display=True,
 
 #----Import Modules----
     from bokeh.models import PrintfTickFormatter,Label,Span
-    import wrangle as xw
+    from . import wrangle as xw
     
 #----Set up opacity----
     if alpha is None:
@@ -720,14 +720,14 @@ def histogram(dataseries,weights=None,bins=100,save=True,display=True,
     #----Calculate median----
     if median is True:
         med = xw.weighted_median(dataseries,weights=weights)
-        print 'med = ',med
+        print('med = ',med)
     if mode is True:
         mod = xw.weighted_modes(dataseries,weights=weights,bins=bins,
                                 logbins=logbins)
-        print 'mode = ',mod
+        print('mode = ',mod)
     if mean is True:
         avg = np.average(dataseries,weights=weights)
-        print 'mean = ',avg
+        print('mean = ',avg)
 
         if stdev is True:
             std = xw.weighted_std(dataseries,weights=weights)
@@ -758,7 +758,7 @@ def histogram(dataseries,weights=None,bins=100,save=True,display=True,
                 ymin = yrng[0]
             if ymin == 0.0: # don't allow ymin=0 if log scale
                 ymin = 0.9*np.min(histy[np.nonzero(histy)])
-            print 'ymin = ',ymin
+            print('ymin = ',ymin)
             yaxisrng=(ymin,ymax)
             
                 
@@ -1102,7 +1102,7 @@ def histogram_grid(dframes,columns=None,weights=None,bins=100,
     newfig = bplt.figure(plot_width=width,plot_height=height)
 
     # create labels (one per dframe)
-    for i in xrange(len(dframes)):
+    for i in range(len(dframes)):
         yi = height-30-30*i
                
         # add color bar
@@ -1140,7 +1140,7 @@ def histogram_grid(dframes,columns=None,weights=None,bins=100,
         
         # loop through any remaining dataframes
         newfig = None # reset newfig for each column
-        for d in xrange(len(dframes)):
+        for d in range(len(dframes)):
             # proceed only if column exists
             if column in dframes[d].columns:
                 if isinstance(weights[d],str):
@@ -1311,7 +1311,7 @@ def spectrum(runpath='../',smin=0,smax=None,datacolor='black',
     import astropy.io.fits as fits
     from bokeh.charts import Step
     from bokeh.models.ranges import Range1d
-    from file_utilities import ls_to_list
+    from .file_utilities import ls_to_list
 
     #----Set defaults----
     if smax==None:
@@ -1352,15 +1352,15 @@ def spectrum(runpath='../',smin=0,smax=None,datacolor='black',
                 iters_avg.fill(sm)
                 foundmodel = True
             else:
-                print ("Warning: "+modelspecfile+" not found.  Skipping +"
-                       "to next spectrum.")
+                print(("Warning: "+modelspecfile+" not found.  Skipping +"
+                       "to next spectrum."))
             sm = sm+1
 
         if foundmodel is False:
-            print "ERROR: no spectrum files found in range."
+            print("ERROR: no spectrum files found in range.")
 
         #--loop over remaining model spectra--
-        for s in xrange(sm,smax+1):
+        for s in range(sm,smax+1):
             modelspecfile = runpath+'/'+specname+str(s)+'.fits'
 #            print modelspecfile
             if os.path.isfile(modelspecfile):
@@ -1371,7 +1371,7 @@ def spectrum(runpath='../',smin=0,smax=None,datacolor='black',
                 model_wave_avg = np.hstack((model_wave_avg,model_wave))
                 iters_avg = np.hstack((iters_avg,model_iters))
             else:
-                print "Warning: "+modelspecfile+" does not exist. Skipping."
+                print("Warning: "+modelspecfile+" does not exist. Skipping.")
 
     #----Convert to pandas Series----
     data_wave = pd.Series(data_wave.byteswap().newbyteorder(),name='Energy (keV)')    
@@ -1404,7 +1404,7 @@ def spectrum(runpath='../',smin=0,smax=None,datacolor='black',
                            logbins=logbins,datarange=datarange,
                            density=False,iterations=iters_avg)
         nspecs = len(np.unique(iters_avg))
-        print 'nspecs = ',nspecs
+        print('nspecs = ',nspecs)
         # scale by number of iterations
         avgmodely = avgmodely*scale[1]/float(nspecs)
         avgmodelerrors = avgmodelerrors*scale[1]/float(nspecs)
@@ -1422,7 +1422,7 @@ def spectrum(runpath='../',smin=0,smax=None,datacolor='black',
 #            lastmodelerrors = lastmodelerrors*scale[2]
 #            lastmodely,lastmodelerrors = normalize_histogram(lastmodely,
 #                                                       lastmodelerrors)
-    print 'max data, model = ',max(datay),max(avgmodely)
+    print('max data, model = ',max(datay),max(avgmodely))
 
     #----Set up Plot----
     if save is True:
@@ -1574,7 +1574,7 @@ def trace(inframe,iteration_type = 'median',itercol = 'iteration',
 
     #----Import Modules----
     from bokeh.models import ColumnDataSource
-    from wrangle import weighted_median,weighted_std
+    from .wrangle import weighted_median,weighted_std
     from functools import partial
 
     #----Copy frame and apply itmin/itmax----
@@ -1776,7 +1776,7 @@ def plot_lines(fig,bins,nlines=50,show=False,**fetchargs):
     import os
     from bokeh.models.annotations import Span,Label
     from bokeh.models import HoverTool
-    from astro_utilities import fetch_lines
+    from .astro_utilities import fetch_lines
 
     #--fetch lines from atomdb file--
     linedf = fetch_lines(**fetchargs)
@@ -1811,7 +1811,7 @@ def plot_lines(fig,bins,nlines=50,show=False,**fetchargs):
         nlines = len(plotdf.index)
 
     #----Print line information----
-    if show is True: print plotdf.head(nlines)
+    if show is True: print(plotdf.head(nlines))
 
     #----Plot lines----
     
@@ -1861,7 +1861,7 @@ def agg_lines(groupeddf,bins,units='energy'):
         y,yerrs,edges,x=make_histogram(grp[units],bins=bins,
                    centers=True,weights=grp.emissivity)
         # combine lines in each (non-empty) bin
-        for b in xrange(len(y)):
+        for b in range(len(y)):
             if y[b] > 0:
                 lab = ion[0]+' '+ion[1]
                 iondf=iondf.append(pd.DataFrame([[x[b],lab,y[b]]],
@@ -1873,7 +1873,7 @@ def agg_lines(groupeddf,bins,units='energy'):
     y,yerrs,edges,x = make_histogram(iondf[units],bins=bins,
                                      centers=True,
                                      weights=iondf['emissivity'])
-    for b in xrange(len(y)):
+    for b in range(len(y)):
         if y[b] > 0:
             # find labels of all in bin
             subdf = iondf[iondf[units]==x[b]]
@@ -1999,7 +1999,7 @@ def spectrum_from_blobs(df,runpath='../',datacolor='black',save=True,
 
     #-call xmc to create the spectrum-
     # (for now do it manually)
-    raw_input("In another terminal: \n\tFrom this directory"
+    input("In another terminal: \n\tFrom this directory"
               " ("+pwd+"),\n"
               "\trun xmc with 'xmc < input_spec'\n"
               "\tWhen spectrum_"+suffix+".fits is produced\n "
@@ -2108,7 +2108,7 @@ def spectra(spectra,colors=['black','steelblue','firebrick'],
     import astropy.io.fits as fits
     from bokeh.charts import Step,color
     from bokeh.models.ranges import Range1d
-    from file_utilities import ls_to_list
+    from .file_utilities import ls_to_list
     from bokeh.models import PrintfTickFormatter
 
     
@@ -2117,7 +2117,7 @@ def spectra(spectra,colors=['black','steelblue','firebrick'],
         scale = [scale]*len(spectra)
 
     if labels is None:
-        labels = ['Spec'+str(i) for i in xrange(len(spectra))]
+        labels = ['Spec'+str(i) for i in range(len(spectra))]
 
     if dashes is None:
         dashes = ['solid']*len(spectra)
@@ -2190,19 +2190,19 @@ def spectra(spectra,colors=['black','steelblue','firebrick'],
                 newyerr = s[1]
             spectra[si] = (newy,newyerr,newx)
 
-            print 'total counts = ',newy.sum()
+            print('total counts = ',newy.sum())
 
         else:
-            print "ERROR: spectrum "+str(si)+" is wrong length. Skipping."
+            print("ERROR: spectrum "+str(si)+" is wrong length. Skipping.")
             
     #--create dictionary of spectra histograms--
 
 #    spectra0 = spectra[0]
 #    edges = spectra0[2]
     specy = [s[0] for s in spectra]
-    specframes = dict(zip(labels,specy)) # add y values to dict
+    specframes = dict(list(zip(labels,specy))) # add y values to dict
     specframes[xlabel] = edges#[:-1] # add x values to dict
-    print len(edges)    
+    print(len(edges))    
     specframes = pd.DataFrame.from_dict(specframes)
     
     # To Do - figure out how to specify a color for each column
@@ -2346,7 +2346,7 @@ def standard_spectra(runpath='../',itmin=1,itmax=None,
     Example:
     """
     # - Imports -
-    from xmcfiles import read_spectra
+    from .xmcfiles import read_spectra
     
     # - Defaults -
     if logbins is None: logbins = xlog
@@ -2373,7 +2373,7 @@ def standard_spectra(runpath='../',itmin=1,itmax=None,
         speclist = [datahist,avghist]
         labs = ['Data','Model (average)']
 
-    print len(datahist[2]),len(avghist[2]),len(lasthist[2])
+    print(len(datahist[2]),len(avghist[2]),len(lasthist[2]))
     sfig = spectra(speclist,
                         labels=labs,
                         display=display,

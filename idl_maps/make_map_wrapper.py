@@ -92,7 +92,7 @@ def make_map(infile,outfile=None,param=None,weights=None,binsize=None,itmod=None
 #----Add xmcinter/maps to IDL path----
     #-get xmcinter/maps path
     xmcinterpath = os.path.dirname(os.path.realpath(__file__))
-    print 'xmcinterpath = ',xmcinterpath
+    print('xmcinterpath = ',xmcinterpath)
 
     #-add to IDL path-
     os.environ['IDL_PATH']='+$IDL_PATH:'+xmcinterpath
@@ -138,7 +138,7 @@ def make_map(infile,outfile=None,param=None,weights=None,binsize=None,itmod=None
 #    cmd = cmd+"'"
         
 #----Execute command----
-    print "Executing: "+cmd
+    print("Executing: "+cmd)
     os.system(cmd)
 
     return True

@@ -164,7 +164,7 @@ def filterblobs(inframe,colnames,minvals=None,maxvals=None,logic='and'):
 #                                     ,quiet=True) 
     #-warn if zero rows match-
     if len(outframe.index) == 0:
-        print "filterblobs: Warning: Filtered dataframe has zero rows."
+        print("filterblobs: Warning: Filtered dataframe has zero rows.")
 
     #-warn if all rows match-
     if len(outframe.index) == len(inframe.index):
@@ -215,15 +215,15 @@ def circlefraction(x,y,r,x0,y0,radius,shape='gauss',
     """
 
     #--import gaussian_integral and related functions--
-    from astro_utilities import gaussian_volume
-    import xmcmap as xm
+    from .astro_utilities import gaussian_volume
+    from . import xmcmap as xm
         # for improved speed, use 
         #  gaussian_integral_quad instead, but it requires extra 
         #  package scipy.integrate.    
 
     # get blob volume in correct units
     if shape not in ['gauss','sphere']: 
-        print "Warning: Unrecognized blob shape. Using shape='gauss'"
+        print("Warning: Unrecognized blob shape. Using shape='gauss'")
         shape = 'gauss'
     if shape == 'gauss':
         volume = gaussian_volume(r)
@@ -357,7 +357,7 @@ def filtercircle(inframe,x='blob_phi',y='blob_psi',r='blob_sigma',
 
     """
     from multiprocessing import Pool
-    from astro_utilities import distance
+    from .astro_utilities import distance
 
     #--check for valid logic--
     if logic != 'exclude':
@@ -440,7 +440,7 @@ def filtercircle(inframe,x='blob_phi',y='blob_psi',r='blob_sigma',
     if (fraction is False):
     #-warn if zero rows match-
         if (len(outframe.index) == 0):
-            print "filtercircle: Warning: Filtered dataframe has zero rows."
+            print("filtercircle: Warning: Filtered dataframe has zero rows.")
 
     #-warn if all rows match-
         if len(outframe.index) == inblobs:
@@ -829,11 +829,11 @@ def credible_region(data, weights=None, frac=0.9, method='HPD'):
     interval = (modes,postx[lowxi+1],postx[highxi-1])
             
     #-check if both upper and lower limits encountered-
-    if lowxi+1 == 0: print "Lower limit reached."
-    if highxi-1 == len(postx)-1: print "Upper limit reached."
-    if netprob < frac: print ("WARNING: Only reached "+str(netprob),
+    if lowxi+1 == 0: print("Lower limit reached.")
+    if highxi-1 == len(postx)-1: print("Upper limit reached.")
+    if netprob < frac: print(("WARNING: Only reached "+str(netprob),
                               " credible interval, parameter range is",
-                              " too narrow.")
+                              " too narrow."))
             
 
     #----ET calculation----
@@ -983,7 +983,7 @@ def line_emissivities(kT,tolerance=0.05,**fetchargs):
 
     """
     import os
-    from astro_utilities import fetch_lines
+    from .astro_utilities import fetch_lines
     
     #----Read in lines----
     linefile = os.path.dirname(__file__)+'/xraylines_atomdb307.txt'
@@ -998,7 +998,7 @@ def line_emissivities(kT,tolerance=0.05,**fetchargs):
     kT.rename(columns={kT.columns[0]:'kT'},inplace=True)
 
     #--define gas temperature ranges--
-    kT['kTrange'] = zip(kT.kT-tolerance,kT.kT+tolerance)
+    kT['kTrange'] = list(zip(kT.kT-tolerance,kT.kT+tolerance))
 
     #--fetch lines from atomdb file--
     kT['emissivities'] = kT['kTrange'].map(lambda x: fetch_lines(kT_range = x,atomdb=atomdb,total=True,**fetchargs))
@@ -1133,7 +1133,7 @@ def normclean(df,nHcol = 'blob_nH',kTcol = 'blob_kT',
     if parallel is True:
         pool=Pool(nproc)
         badind = pool.map(normfilter_star,fargs)
-        print type(badind)
+        print(type(badind))
         pool.close()
         pool.join()
 
@@ -1229,9 +1229,9 @@ def make_spectrum(df,runpath='../',suffix='99999',oversim='auto',
     """
     #--imports--
     import os
-    from xmcfiles import fake_deconvolution,read_spectra,merge_output
-    from file_utilities import parse_file_line,ls_to_list
-    from astro_utilities import abs_cross_section
+    from .xmcfiles import fake_deconvolution,read_spectra,merge_output
+    from .file_utilities import parse_file_line,ls_to_list
+    from .astro_utilities import abs_cross_section
     
     pwd = os.getcwd()+'/'
 
@@ -1261,7 +1261,7 @@ def make_spectrum(df,runpath='../',suffix='99999',oversim='auto',
         else:
             nH = fixed_nH
     nH = nH*1e22
-    print 'nH avg = ',nH
+    print('nH avg = ',nH)
     
     #--read fake file into xmc and create spectrum--
     
@@ -1322,7 +1322,7 @@ def make_spectrum(df,runpath='../',suffix='99999',oversim='auto',
 
     #-call xmc to create the spectrum-
     # (for now do it manually)
-    raw_input("In another terminal: \n\tFrom this directory"
+    input("In another terminal: \n\tFrom this directory"
               " ("+pwd+"),\n"
               "\trun xmc with 'xmc < input_spec'\n"
               "\tWhen spectrum_"+suffix+".fits is produced\n "
@@ -1339,8 +1339,8 @@ def make_spectrum(df,runpath='../',suffix='99999',oversim='auto',
     newnorm = sum([dfnew[col].sum() for col in dfnew.columns if 'norm' in col])
     xspecscale = oldnorm/newnorm
 #    xspecscale = newnorm/oldnorm
-    print 'newnorm, oldnorm, scale = ',newnorm,oldnorm, xspecscale
-    print 'niters = ',niters
+    print('newnorm, oldnorm, scale = ',newnorm,oldnorm, xspecscale)
+    print('niters = ',niters)
     
     #--Create Histogram (Read in spectrum file)--
     blobspecs = read_spectra(runpath=pwd,smin=int(suffix),
@@ -1360,10 +1360,10 @@ def make_spectrum(df,runpath='../',suffix='99999',oversim='auto',
     crosses = np.vectorize(abs_cross_section)
     sigmas = crosses(bspec[2]) # one for each spectral bin
     absorption = np.exp(-1.0*sigmas*nH)
-    print 'min,max y = ',min(y),max(y)
+    print('min,max y = ',min(y),max(y))
     y = y*absorption[:-1]
-    print 'min,max y = ',min(y),max(y)
-    print 'min,max cross sections = ',min(sigmas),max(sigmas)
-    print 'min,max absorption = ',min(absorption),max(absorption)
+    print('min,max y = ',min(y),max(y))
+    print('min,max cross sections = ',min(sigmas),max(sigmas))
+    print('min,max absorption = ',min(absorption),max(absorption))
     
     return (y,bspec[1],bspec[2])

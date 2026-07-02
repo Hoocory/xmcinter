@@ -17,7 +17,7 @@ Contains the following functions:
 import os
 import numpy as np
 import pandas as pd
-import file_utilities as fu
+from . import file_utilities as fu
 
 
 #----------------------------------------------------------
@@ -34,14 +34,14 @@ def remove_nans(datatable,filename=None,verbose=1):
     else:
         row=' rows'
         was=' were'
-    if verbose > 1: print "number of dropped rows = ",ndropped
+    if verbose > 1: print("number of dropped rows = ",ndropped)
     if (ndropped > 0) and (verbose > 0): 
         if filename == None: 
-            print "Warning: "+str(nb1-nb2)+row+" contained nan "+\
-                   "values and"+was+" dropped."
+            print("Warning: "+str(nb1-nb2)+row+" contained nan "+\
+                   "values and"+was+" dropped.")
         else:
-            print "Warning: "+str(nb1-nb2)+row+" in "+filename+\
-                   " contained nan values and"+was+" dropped."
+            print("Warning: "+str(nb1-nb2)+row+" in "+filename+\
+                   " contained nan values and"+was+" dropped.")
     return datatable
 
 #----------------------------------------------------------
@@ -174,9 +174,9 @@ def merge_output(runpath='./',filetype='deconvolution',save=True,sep='\t',
             datatable = pd.concat([datatable,newframe],
                                   ignore_index=True)
             if iternum%500 == 0:
-                print 'Read iteration '+str(iternum)
+                print('Read iteration '+str(iternum))
         else:
-            print 'Warning: '+f+' is missing or empty. Skipping.'
+            print('Warning: '+f+' is missing or empty. Skipping.')
     # -- Write to file --
     if save == True: datatable.to_csv(runpath+'/'+filetype+'_merged.txt',
                                       sep=sep)
@@ -233,7 +233,7 @@ def fake_deconvolution(df,suffix='99999',runpath='../'):
     #--check if file exists--
     clobber = 'y'
     if os.path.isfile('deconvolution.'+suffix):
-        clobber = raw_input("File deconvolution."+suffix+" already exists. Overwrite file? (y/n)  ")
+        clobber = input("File deconvolution."+suffix+" already exists. Overwrite file? (y/n)  ")
     if clobber in ['y','yes','Yes','Y']:
         clobber = True
     else:
@@ -318,8 +318,8 @@ def read_spectra(runpath='../',itmin=1,itmax=None,logbins=False,
     #----Import Modules----
     import os,re
     import astropy.io.fits as fits
-    from file_utilities import ls_to_list,parse_file_line
-    from wrangle import make_histogram
+    from .file_utilities import ls_to_list,parse_file_line
+    from .wrangle import make_histogram
 
     #----Set defaults----
         
@@ -347,10 +347,10 @@ def read_spectra(runpath='../',itmin=1,itmax=None,logbins=False,
     foundspec = False
     sm = itmin
     hists = []
-    print itmin,itmax
+    print(itmin,itmax)
     while (sm<=itmax and foundspec is False):
         specfile = runpath+'/'+specname+str(sm)+'.fits'
-        print specfile
+        print(specfile)
         if os.path.isfile(specfile):
             table = fits.getdata(specfile,0)
             wave = table.field('wave')
@@ -393,11 +393,11 @@ def read_spectra(runpath='../',itmin=1,itmax=None,logbins=False,
 
         if foundspec is False:
             #print sm
-            print "ERROR: no spectrum files found in range."
+            print("ERROR: no spectrum files found in range.")
 #            print "WARNING: No spectrum files found in range. Plotting data spectrum only."
             
     #----Loop over remaining spectra----
-    for s in xrange(sm+1,itmax+1):
+    for s in range(sm+1,itmax+1):
         specfile = runpath+'/'+specname+str(s)+'.fits'
         if os.path.isfile(specfile):
             table = fits.getdata(specfile,0)
@@ -452,7 +452,7 @@ def read_spectra(runpath='../',itmin=1,itmax=None,logbins=False,
 
         #-scale by number of iterations-
         nspec = len(np.unique(iters_avg))
-        print 'nspec = ',nspec
+        print('nspec = ',nspec)
         y = y/float(nspec)/oversim
         yerrors = yerrors/float(nspec)/oversim
         

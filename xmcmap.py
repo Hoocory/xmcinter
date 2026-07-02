@@ -220,10 +220,10 @@ def make_map(indata,outfile=None,paramname='blob_kT',paramweights=None,
     """
     
     #----Import Modules----
-    from wrangle import filterblobs
-    from astro_utilities import gaussian_volume
+    from .wrangle import filterblobs
+    from .astro_utilities import gaussian_volume
     import time
-    import plots as xplt
+    from . import plots as xplt
     
     #----Set any defaults----
     if withsignificance is True: witherror = True
@@ -242,9 +242,9 @@ def make_map(indata,outfile=None,paramname='blob_kT',paramweights=None,
 
     #----Verify inputs----
     types = ['median','average','total','error','max','stdev']
-    for i in xrange(len(paramname)):
+    for i in range(len(paramname)):
         if ctype[i] not in types:
-            print "Warning: Unrecognized ctype. Using ctype='median'"
+            print("Warning: Unrecognized ctype. Using ctype='median'")
             ctype[i] = 'median'
         if iteration_type[i] not in types:
             print ("Warning: Unrecognized iteration_type. "
@@ -253,18 +253,18 @@ def make_map(indata,outfile=None,paramname='blob_kT',paramweights=None,
 
     if (paramshape != 'gauss') and (paramshape != 'sphere' ) and \
     (paramshape != 'points'):
-        print "Warning: Unrecognized paramshape. Using paramshape='gauss'"
+        print("Warning: Unrecognized paramshape. Using paramshape='gauss'")
         paramshape = 'gauss'
 
     if (sigthreshparam is not None) and (sigthreshparam not in paramname):
-        print ("Warning: "+sigthreshparam+" is not in paramname. "
-               "Resetting sigthreshparam=None.")
+        print(("Warning: "+sigthreshparam+" is not in paramname. "
+               "Resetting sigthreshparam=None."))
         sigthreshparam=None
 
     if (imgthreshparam is not None) and \
     (imgthreshparam not in paramname):
-        print ("Warning: "+imgthreshparam+" is not in paramname. "
-               "Resetting imgthreshparam=None.")
+        print(("Warning: "+imgthreshparam+" is not in paramname. "
+               "Resetting imgthreshparam=None."))
         imgthreshparam=None
 
     #----Store blob information in DataFrame and set output file----
@@ -290,14 +290,14 @@ def make_map(indata,outfile=None,paramname='blob_kT',paramweights=None,
     outfiles = [outfile]*len(paramname)
     moviedirs = [None]*len(paramname)
     badparams = []
-    for p in xrange(len(paramname)):
+    for p in range(len(paramname)):
         outfiles[p] = outfile_base+iteration_type[p]+'_'+paramname[p]+'.fits'
         moviedirs[p] = outfile_base+iteration_type[p]+'_'+paramname[p]+'_movie/'
 
         #--check if output file already exists--
         if os.path.isfile(outfiles[p]) and clobber is not True:
-            print ("Warning: "+outfile+" exists and clobber=False. "
-                   "Not mapping "+paramname[p]+".")
+            print(("Warning: "+outfile+" exists and clobber=False. "
+                   "Not mapping "+paramname[p]+"."))
             badparams = badparams + [paramname[p]]
             #-check if sigthreshparam is being removed-
             if paramname[p] == sigthreshparam:
@@ -343,8 +343,8 @@ def make_map(indata,outfile=None,paramname='blob_kT',paramweights=None,
         yimagesize = 1.1*(max(df[paramy] - min(df[paramy])))
     elif isinstance(imagesize,tuple) or isinstance(imagesize,list):
         if len(imagesize)>2: 
-            print ("calculate_map: Warning: imagesize has too many"+ 
-                   " elements, using first two only")
+            print(("calculate_map: Warning: imagesize has too many"+ 
+                   " elements, using first two only"))
         if len(imagesize)>=2:
             ximagesize=imagesize[0]
             yimagesize=imagesize[1]
@@ -370,7 +370,7 @@ def make_map(indata,outfile=None,paramname='blob_kT',paramweights=None,
     ximagesize = ximageradius*2.0
     yimagesize = yimageradius*2.0
 
-    print 'x,yimagesize,x0,y0,xmin,ymin = ',ximagesize,yimagesize,x0,y0,xmin,ymin
+    print('x,yimagesize,x0,y0,xmin,ymin = ',ximagesize,yimagesize,x0,y0,xmin,ymin)
 
     #-number of map layers (one per iteration) and number of pixels-
     niter = np.unique(df['iteration']).size
@@ -384,7 +384,7 @@ def make_map(indata,outfile=None,paramname='blob_kT',paramweights=None,
         itmod = niter/nlayers
     nbins_x = int(np.floor((xmax - xmin)/binsize))
     nbins_y = int(np.floor((ymax - ymin)/binsize))
-    print 'nbins_x, nbins_y, nlayers = ',nbins_x,nbins_y,nlayers
+    print('nbins_x, nbins_y, nlayers = ',nbins_x,nbins_y,nlayers)
 
     imgs = [] #empty list of image arrays (one per parameter)
     errimgs = [] #empty list of image arrays (one per parameter)
@@ -430,7 +430,7 @@ def make_map(indata,outfile=None,paramname='blob_kT',paramweights=None,
     for i, group in layers: 
 
         if parallel is False: # create iteration images in serial
-            print 'layer = ',layer
+            print('layer = ',layer)
             #i=iteration number, group = subset of dataframe
             image_stacks[:,:,:,layer] = iteration_image(group,paramname,
                                  paramweights,
@@ -459,7 +459,7 @@ def make_map(indata,outfile=None,paramname='blob_kT',paramweights=None,
     #--Collapse Image Stack (combine iterations)--
     collapsed_images = np.zeros((nbins_x,nbins_y,nparams))
     err_images = np.zeros((nbins_x,nbins_y,nparams))
-    for p in xrange(len(paramname)):
+    for p in range(len(paramname)):
         themap = collapse_stack(image_stacks[:,:,p,:],
                                 ctype=ctype[p],n=nlayers)
 
@@ -512,8 +512,8 @@ def make_map(indata,outfile=None,paramname='blob_kT',paramweights=None,
             imgthp = paramname.index(imgthreshparam)
             imgthmap = imgs[imgthp]       
 
-    for p in xrange(len(paramname)):
-        print "Applying thresholds to "+paramname[p]
+    for p in range(len(paramname)):
+        print("Applying thresholds to "+paramname[p])
 
         themap=imgs[p]
         errmap=errimgs[p]
@@ -534,11 +534,11 @@ def make_map(indata,outfile=None,paramname='blob_kT',paramweights=None,
 
             # - if number given as string, then use the fraction of max as threshold -
             if isinstance(imgthresh,str):
-                print 'imgthresh=',imgthresh
+                print('imgthresh=',imgthresh)
                 imgthresh = float(imgthresh)*np.max(imgthmap)
-                print 'max imgthreshparam map = ',np.max(imgthmap)
-                print 'imgthresh=',imgthresh
-            print 'imgthresh=',imgthresh
+                print('max imgthreshparam map = ',np.max(imgthmap))
+                print('imgthresh=',imgthresh)
+            print('imgthresh=',imgthresh)
                 
             # - set pixels with value < threshold to Nan - 
             #imgmin = np.nanmax(imgmap)-imgthresh*np.nanstd(imgmap)
@@ -630,9 +630,9 @@ def movie_from_stack(stack,moviedir,cumulativemovie=False,ctype='median',
 
     # - loop over layers and save images to file -
     nlayers = stack.shape[2]
-    for layer in xrange(nlayers):
+    for layer in range(nlayers):
         framenum="%03d" % (layer,)
-        print 'frame '+framenum
+        print('frame '+framenum)
 
         fig.set_size_inches(5,5)
         ax = plt.Axes(fig,[0.,0.,1.,1.])
@@ -651,9 +651,9 @@ def movie_from_stack(stack,moviedir,cumulativemovie=False,ctype='median',
             elif ctype == 'error':
                 collapsed_img = np.std(stack[:,:,:layer],axis=2)
             else: 
-                print "movie_from_stack: ERROR: unrecognized ctype"
+                print("movie_from_stack: ERROR: unrecognized ctype")
             im = collapsed_img
-            print 'min,max im = ',np.min(im),np.max(im)
+            print('min,max im = ',np.min(im),np.max(im))
 
         # - convert to color image and plot - 
 #        fig,ax=plt.subplots()
@@ -755,7 +755,7 @@ def gaussian2D(x,y,mux,muy,sigmax,sigmay):
 def point_integral(lowerx,upperx,lowery,uppery,x,y):
     """Function to determine if blob center lies in pixel."""
     
-    print "ERROR: point_integral is not yet functional."
+    print("ERROR: point_integral is not yet functional.")
     f = x.to_frame('x')
     f['y'] = y
     f.ycheck = np.where((lowery < f['y'] & f['y'] < uppery),1.0,0.0)
@@ -781,8 +781,8 @@ def circle_mask(df,paramx,paramy,exclude_region,binsize,imagesize,x0,y0):
     dummy = pd.Series(np.ones_like(df[paramx].values)
                       ,index=df[paramx].index)
     dummy=dummy.to_frame('mask')
-    print 'len dummy = ',len(dummy.index)
-    print 'len df = ',len(df.index)
+    print('len dummy = ',len(dummy.index))
+    print('len df = ',len(df.index))
 
     dummy[paramx] = df[paramx].values
     dummy[paramy] = df[paramy].values
@@ -807,7 +807,7 @@ def calculate_fractions(data,nbins_x,nbins_y,binsize,xmin,ymin,
                     fast=True,
                     n_int_steps=1000):
     """Function to calculate fraction of blob in each pixel"""
-    from astro_utilities import gaussian_volume
+    from .astro_utilities import gaussian_volume
     
     #----Calculate blob volumes in correct units (usually arcsec^3)----
     if shape == 'gauss':
@@ -818,7 +818,7 @@ def calculate_fractions(data,nbins_x,nbins_y,binsize,xmin,ymin,
         volumes = (0.1*binsize)**3.0 # set to much smaller than pixel
 
         #--loop over image--
-    for x in xrange(nbins_x):
+    for x in range(nbins_x):
         #get x integral
         lowerx = int(xmin + x*binsize)
         upperx = int(xmin + x*binsize + binsize)
@@ -837,12 +837,12 @@ def calculate_fractions(data,nbins_x,nbins_y,binsize,xmin,ymin,
                                 use_ctypes=use_ctypes),\
                                 axis=1)
         elif shape == 'sphere':
-            print "ERROR: spherical_integral() not yet implemented"
+            print("ERROR: spherical_integral() not yet implemented")
             x_blob_integrals = spherical_integral(lowerx,upperx,\
                                                       n_int_steps,\
                                                      data[blobx],
                                                   data[blobsize])
-        for y in xrange(nbins_y):
+        for y in range(nbins_y):
             #get y integral
             lowery = int(ymin + y*binsize)
             uppery = int(ymin + y*binsize + binsize)
@@ -900,9 +900,9 @@ def iteration_image(data,params,weights,nbins_x,nbins_y,binsize,xmin,ymin,
                     fast=True,
                     n_int_steps=1000):
     """Function to combine blobs from single iteration into 1 image."""
-    from wrangle import weighted_median, weighted_std
-    from astro_utilities import gaussian_volume
-    import plots as xplt
+    from .wrangle import weighted_median, weighted_std
+    from .astro_utilities import gaussian_volume
+    from . import plots as xplt
 
     #--initialize stack of 2D images, one for each parameter--
     iterimages = np.zeros((nbins_x,nbins_y,len(params)))
@@ -916,7 +916,7 @@ def iteration_image(data,params,weights,nbins_x,nbins_y,binsize,xmin,ymin,
         volumes = (0.1*binsize)**3.0 # set to much smaller than pixel
 
     #--loop over image--
-    for x in xrange(nbins_x):
+    for x in range(nbins_x):
         #get x integral
         lowerx = int(xmin + x*binsize)
         upperx = int(xmin + x*binsize + binsize)
@@ -935,12 +935,12 @@ def iteration_image(data,params,weights,nbins_x,nbins_y,binsize,xmin,ymin,
                                 use_ctypes=use_ctypes),\
                                 axis=1)
         elif shape == 'sphere':
-            print "ERROR: spherical_integral() not yet implemented"
+            print("ERROR: spherical_integral() not yet implemented")
             x_blob_integrals = spherical_integral(lowerx,upperx,\
                                                       n_int_steps,\
                                                      data[blobx],
                                                   data[blobsize])
-        for y in xrange(nbins_y):
+        for y in range(nbins_y):
             #get y integral
             lowery = int(ymin + y*binsize)
             uppery = int(ymin + y*binsize + binsize)
@@ -984,7 +984,7 @@ def iteration_image(data,params,weights,nbins_x,nbins_y,binsize,xmin,ymin,
 
 
             #-combine blobs in this pixel (loop over parameters)-
-            for p in xrange(len(params)):
+            for p in range(len(params)):
                 if weights[p] is None: # default is equal weights
                     w = pd.Series(np.ones_like(data[params[p]]),
                                   index=data[params[p]].index)
@@ -1009,7 +1009,7 @@ def iteration_image(data,params,weights,nbins_x,nbins_y,binsize,xmin,ymin,
 #                    iterimages[x,y,p]=np.std(data[params[p]]*w*fractions)
                     iterimages[x,y,p]=weighted_std(data[params[p]],weights=w*fractions)
                 else:
-                    print "ERROR: unrecognized iteration_type"
+                    print("ERROR: unrecognized iteration_type")
 
     return iterimages
 
@@ -1036,6 +1036,6 @@ def collapse_stack(img_stack,ctype,n=None):
     elif ctype == 'error':
         collapsed_img = np.std(img_stack,axis=2)
     else: 
-        print "ERROR: unrecognized ctype"
+        print("ERROR: unrecognized ctype")
 
     return collapsed_img

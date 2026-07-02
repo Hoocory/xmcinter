@@ -63,7 +63,7 @@ from ..analysis.wrangle import filterblobs,weighted_median
 
 def gaussian_integral(lowerx,upperx,dx,x,sigma):
 
-    for xp in xrange(lowerx,upperx,dx):
+    for xp in range(lowerx,upperx,dx):
         integ = integ + np.exp(-1.0/2.0*(xp-x)**2.0/sigma**2.0)*dx
 
     return integ
@@ -72,7 +72,7 @@ def gaussian_integral(lowerx,upperx,dx,x,sigma):
 def iteration_image(data,nbins_x,nbins_y,binsize,n_int_steps,iteration_type,
                     shape):
 
-    for x in xrange(nbins_x):
+    for x in range(nbins_x):
             #get x integral
             lowerx = xmin + x*binsize
             upperx = xmin + x*binsize + binsize
@@ -83,7 +83,7 @@ def iteration_image(data,nbins_x,nbins_y,binsize,n_int_steps,iteration_type,
             elif shape == 'sphere':
                 x_blob_integrals = spherical_integral(lowerx,upperx,dx,
                                                       data['x'],data['size'])
-            for y in xrange(nbins_y):
+            for y in range(nbins_y):
                 #get y integral
                 lowery = ymin + y*binsize
                 uppery = ymin + y*binsize + binsize
@@ -104,7 +104,7 @@ def iteration_image(data,nbins_x,nbins_y,binsize,n_int_steps,iteration_type,
                 #times dz integral to get total volume in pixel, 
                 #then divided by total volume
                 else:
-                    print "points is not yet implemented"
+                    print("points is not yet implemented")
                     # if assuming points, then fraction=1 or 0
                     # !! in progress !!
 
@@ -118,7 +118,7 @@ def iteration_image(data,nbins_x,nbins_y,binsize,n_int_steps,iteration_type,
                 elif iteration_type == 'total':
                     iterimage=np.sum(data['param']*data['weight']*fractions)
                 else:
-                    print "ERROR: unrecognized iteration_type"
+                    print("ERROR: unrecognized iteration_type")
 
     return iterimage
 
@@ -134,7 +134,7 @@ def collapse_stack(img_stack,nbins_x,nbins_y,ctype):
     elif ctype == 'error':
         collapsed_img = np.std(img_stack,axis=2)
     else: 
-        print "ERROR: unrecognized iteration_type"
+        print("ERROR: unrecognized iteration_type")
 
     return collapsed_img
 
@@ -149,7 +149,7 @@ def calculate_map(blobparam,blobx,bloby,blobsize,blobiterations=None,
     #----Set Defaults----
     types = ['median','average','total','error']
     if ctype not in types:
-        print "Warning: Unrecognized ctype. Using ctype='median'"
+        print("Warning: Unrecognized ctype. Using ctype='median'")
         ctype = 'median'
     if iteration_type not in types:
         print ("Warning: Unrecognized iteration_type. "
@@ -158,7 +158,7 @@ def calculate_map(blobparam,blobx,bloby,blobsize,blobiterations=None,
     if blobiterations == None:
         blobiterations = np.zeros_like(blobparam)
     if (shape != 'gauss') and (shape != 'sphere' ):
-        print "Warning: Unrecognized blob shape. Using shape='gauss'"
+        print("Warning: Unrecognized blob shape. Using shape='gauss'")
         shape = 'gauss'
     if imagesize == None:
         imagesize = 1.2*(max(blobx) - min(blobx))

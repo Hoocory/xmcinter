@@ -10,9 +10,9 @@ Contents:
 #-import common modules-
 import pandas as pd
 import numpy as np
-import plots as xplt
-import wrangle as xw
-from xmcfiles import merge_output
+from . import plots as xplt
+from . import wrangle as xw
+from .xmcfiles import merge_output
 
 #----------------------------------------------------------
 def clean(runpath='./',itmin=0,itmax=None,distance=8.0):
@@ -58,7 +58,7 @@ def clean(runpath='./',itmin=0,itmax=None,distance=8.0):
     """
 
     # -- import modules --
-    import astro_utilities as astro
+    from . import astro_utilities as astro
 
     # -- read deconvolution files --
     if isinstance(runpath,str):
@@ -88,7 +88,7 @@ def clean(runpath='./',itmin=0,itmax=None,distance=8.0):
                                          astro.convert_distance(distance,
                                                                 'kpc',
                                                                 'cm'))
-    print 'saved EM = ',df.blob_em.iloc[0]
+    print('saved EM = ',df.blob_em.iloc[0])
 
     # -- add hydrogen number densities of blobs in cm^-3, hydrogen mass --
     if 'blob_sigma' in df.columns:
@@ -111,7 +111,7 @@ def clean(runpath='./',itmin=0,itmax=None,distance=8.0):
     # -- check EM calculation --
     testem = astro.norm_to_em(df.iloc[0]['blob_norm'],
                               astro.convert_distance(distance,'kpc','cm'))
-    print 'test EM = ',testem
+    print('test EM = ',testem)
 
     return df
 
@@ -174,9 +174,9 @@ def check(runpath='./',outpath='./',itmin=0,itmax=None,kTthresh=None,
 
     # -- import modules --
     import os
-    from file_utilities import ls_to_list
-    import xmcmap as xm
-    from xmcfiles import read_spectra
+    from .file_utilities import ls_to_list
+    from . import xmcmap as xm
+    from .xmcfiles import read_spectra
    
     # -- define defaults -- 
     # - these should be overwritten if init_file is provided -
@@ -212,7 +212,7 @@ def check(runpath='./',outpath='./',itmin=0,itmax=None,kTthresh=None,
         kTthresh = 0.0
 
     # -- plot chi2 --
-    print "\nPlotting chi2 ...\n"
+    print("\nPlotting chi2 ...\n")
     sf = xplt.chi2(runpath,itmax=itmax,display=display,
                    outfile=outpath+'/chi2_vs_iteration.html')
     
@@ -220,11 +220,11 @@ def check(runpath='./',outpath='./',itmin=0,itmax=None,kTthresh=None,
     if itmax is None:
         itmax = np.max(sf.iteration)
     sf = xw.filterblobs(sf,'iteration',minvals=itmin,maxvals=itmax)
-    print 'Filtered sf'
+    print('Filtered sf')
     medchi2 = xw.weighted_median(sf['redchi2'])
 
     # -- read deconvolution files --
-    print "\nReading deconvolution files ...\n"
+    print("\nReading deconvolution files ...\n")
     dfall=merge_output(runpath,save=False,itmin=itmin,itmax=itmax)
 
     
@@ -239,13 +239,13 @@ def check(runpath='./',outpath='./',itmin=0,itmax=None,kTthresh=None,
     if itmin == None:
         itmin = np.min(dfall['iteration'])
 
-    print '\nIterations '+str(itmin)+' - '+str(itmax)+' : '
-    print "Total Number of Blobs = ",len(dfall.index)
-    print 'Median chi2/dof = '+str(medchi2)+'\n'
+    print('\nIterations '+str(itmin)+' - '+str(itmax)+' : ')
+    print("Total Number of Blobs = ",len(dfall.index))
+    print('Median chi2/dof = '+str(medchi2)+'\n')
 
     # -- plot model and data spectra --
     if skipspectrum is False:
-        print "\nPlotting spectrum ...\n"
+        print("\nPlotting spectrum ...\n")
 
         sfig = xplt.standard_spectra(runpath=runpath,display=display,
                                      itmin=itmin,legacy=legacy,
@@ -256,12 +256,12 @@ def check(runpath='./',outpath='./',itmin=0,itmax=None,kTthresh=None,
                                  nlines=100,energy_range=(0.87,10.0))
     
     # -- make median traceplots --
-    print "\nPlotting traces ...\n"
+    print("\nPlotting traces ...\n")
     efig = xplt.trace(dfall,weights=None,display=display,
                       outfile=outpath+'/trace_plots.html')
 
     # -- make histograms --
-    print "\nPlotting posteriors ...\n"
+    print("\nPlotting posteriors ...\n")
     
     hfigs = xplt.histogram_grid([dfall,dfall],weights=[None,'blob_em'],
                                 bins=nbins,ncols=3,norm=True,
@@ -270,13 +270,13 @@ def check(runpath='./',outpath='./',itmin=0,itmax=None,kTthresh=None,
                                 legends=['Unweighted','EM weighted'],
                                 width=w,height=h,iterations='iteration')
 
-    print "\nPlotting filtered posteriors ...\n"
+    print("\nPlotting filtered posteriors ...\n")
     if init_file is not None:
         dfgood = il.nHkTthresh(dfall)
         dfgood = dfgood[dfgood.blob_kT>=kTthresh]
     else:
         dfgood = dfall[dfall.blob_kT>=kTthresh]
-    print "Total Number of Filtered Blobs = ",len(dfgood.index)
+    print("Total Number of Filtered Blobs = ",len(dfgood.index))
         
     hfigs = xplt.histogram_grid([dfgood,dfgood],
                                 weights=[None,'blob_em'],
@@ -287,13 +287,13 @@ def check(runpath='./',outpath='./',itmin=0,itmax=None,kTthresh=None,
                                 width=w,height=h,iterations='iteration')
 
     # -- scatter plots--
-    print "\nPlotting scatter plots ...\n"
+    print("\nPlotting scatter plots ...\n")
     blobcols = [c for c in dfall.columns if 'blob' in c]
     sfigs2 = xplt.scatter_grid(dfall[blobcols],agg=None,sampling=1000,
                                display=display)
 
     # -- make norm map from most recent iteration --
-    print "\nMaking blob norm map ...\n"
+    print("\nMaking blob norm map ...\n")
         
     img1file = (outpath+'/bin'+str(int(pixelsize))+
                 '_iter'+str(itmax))

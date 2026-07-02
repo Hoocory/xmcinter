@@ -14,7 +14,7 @@ Contains the following functions:
 
 #----------------------------------------------------------
 #-import common modules-
-import re,sys,commands
+import re,sys,subprocess
 import os
 import fnmatch
 
@@ -44,7 +44,7 @@ def ls_to_list(search_dir,ls_args=''):
   os.chdir(search_dir)
 
   #-get list of files-
-  longstr = commands.getoutput("ls "+ls_args) #stores as single string
+  longstr = subprocess.getoutput("ls "+ls_args) #stores as single string
   
   #-parse into separate files-
   file_list = longstr.split('\n')
@@ -127,16 +127,16 @@ def fetch_file(search_dir,pat='evt2',prompt=True):
     return good_files[0] 
   elif len(good_files) > 1: #if multiple matching files
     if prompt is False:
-      print 'Warning: Multiple files found matching '+pat+' ;'
-      print '         choosing '+good_files[0]
+      print('Warning: Multiple files found matching '+pat+' ;')
+      print('         choosing '+good_files[0])
       return good_files[0]
     else:
       if prompt is True: #if prompt was not set to a number
-        print 'More than one file found matching '+pat+','
-        print 'please choose from the following:'
+        print('More than one file found matching '+pat+',')
+        print('please choose from the following:')
         for g in range(len(good_files)):
-          print good_files[g]+' ['+str(g)+']'
-        ind = input('Number of file: ')
+          print(good_files[g]+' ['+str(g)+']')
+        ind = int(input('Number of file: '))
       else: #if prompt set to a number
         ind = int(prompt)
       return good_files[ind]
@@ -145,7 +145,7 @@ def fetch_file(search_dir,pat='evt2',prompt=True):
       sys.exit('ERROR: no file found in '+search_dir+' matching '+pat)
     else:
       inquiry = 'No file found matching '+pat+'\nEnter full path to file: '
-      file = raw_input(inquiry)
+      file = input(inquiry)
       if os.path.isfile(file)==False: #make sure given file exists
         sys.exit('ERROR: Specified file does not exist.')
       else:
