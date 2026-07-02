@@ -8,6 +8,14 @@ The xmcinter python package requires the following third-party packages:
 - bokeh
 - scipy
 
+#installation
+1) download the repository
+2) cd into the main directory 
+3) pip install .
+
+If you are using jupyter notebooks you'll be able to use xmcinter from by using 
+```import xmcinter.xmcfiles```
+
 Python 3 setup notes:
 - Install the Python dependencies with:
 
