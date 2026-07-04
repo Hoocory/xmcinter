@@ -1,0 +1,2271 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentation for the legacy XMC analysis interface package.">
+      
+      
+      
+      
+        <link rel="prev" href="../xmcfiles/">
+      
+      
+        <link rel="next" href="../xmcmap/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>wrangle - XMCInter</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#wrangle" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="XMCInter" class="md-header__button md-logo" aria-label="XMCInter" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            XMCInter
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              wrangle
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="blue"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="XMCInter" class="md-nav__button md-logo" aria-label="XMCInter" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    XMCInter
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Getting Started
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/quick-start/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Core Modules
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Core Modules
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../xmcfiles/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    xmcfiles
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    wrangle
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    wrangle
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#filterblobs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        filterblobs()
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#simplefilterblobs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        simplefilterblobs()
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#filtercircle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        filtercircle()
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#weighted-statistics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Weighted Statistics
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Weighted Statistics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#weighted_median" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        weighted_median()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#weighted_std" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        weighted_std()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#weighted_modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        weighted_modes()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#credible_region" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        credible_region()
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#histogram-helpers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Histogram Helpers
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Histogram Helpers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#make_histogram" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        make_histogram()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#normalize_histogram" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        normalize_histogram()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iter_err" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        iter_err()
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#spectral-subset-helpers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Spectral Subset Helpers
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Spectral Subset Helpers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#make_spectrum" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        make_spectrum()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#normclean" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        normclean()
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#line-emission-helpers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Line Emission Helpers
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Line Emission Helpers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#line_emissivities-and-blob_line_photons" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        line_emissivities() and blob_line_photons()
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../xmcmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    xmcmap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../diagnostics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    diagnostics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../plots/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    plots
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Utilities
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Utilities
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../utilities/astro_utilities/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    astro_utilities
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../utilities/file_utilities/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    file_utilities
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tutorials
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Tutorials
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorials/reading-xmc-output/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reading XMC Output
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorials/filtering-blobs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Filtering Blobs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorials/creating-maps/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Creating Maps
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorials/diagnostics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Diagnostics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/function-index/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Function Index
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#filterblobs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        filterblobs()
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#simplefilterblobs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        simplefilterblobs()
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#filtercircle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        filtercircle()
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#weighted-statistics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Weighted Statistics
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Weighted Statistics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#weighted_median" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        weighted_median()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#weighted_std" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        weighted_std()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#weighted_modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        weighted_modes()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#credible_region" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        credible_region()
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#histogram-helpers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Histogram Helpers
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Histogram Helpers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#make_histogram" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        make_histogram()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#normalize_histogram" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        normalize_histogram()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iter_err" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        iter_err()
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#spectral-subset-helpers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Spectral Subset Helpers
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Spectral Subset Helpers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#make_spectrum" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        make_spectrum()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#normclean" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        normclean()
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#line-emission-helpers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Line Emission Helpers
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Line Emission Helpers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#line_emissivities-and-blob_line_photons" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        line_emissivities() and blob_line_photons()
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="wrangle"><code>wrangle</code></h1>
+<p><code>xmcinter.wrangle</code> contains DataFrame filtering, weighted statistics, histogram
+helpers, and a few spectrum/subset utilities.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">xmcinter.wrangle</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xw</span>
+</code></pre></div>
+<h2 id="filterblobs"><code>filterblobs()</code></h2>
+<div class="highlight"><pre><span></span><code><span class="n">xmcinter</span><span class="o">.</span><span class="n">wrangle</span><span class="o">.</span><span class="n">filterblobs</span><span class="p">(</span>
+    <span class="n">inframe</span><span class="p">,</span>
+    <span class="n">colnames</span><span class="p">,</span>
+    <span class="n">minvals</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">maxvals</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">logic</span><span class="o">=</span><span class="s2">&quot;and&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+<p><strong>Purpose</strong><br />
+Filter a blob DataFrame by one or more parameter ranges.</p>
+<p><strong>Parameters</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>inframe</code></td>
+<td>required</td>
+<td>Input <code>pandas.DataFrame</code>.</td>
+</tr>
+<tr>
+<td><code>colnames</code></td>
+<td>required</td>
+<td>Column name or list of column names.</td>
+</tr>
+<tr>
+<td><code>minvals</code></td>
+<td><code>None</code></td>
+<td>Minimum value or list of minimum values to keep.</td>
+</tr>
+<tr>
+<td><code>maxvals</code></td>
+<td><code>None</code></td>
+<td>Maximum value or list of maximum values to keep.</td>
+</tr>
+<tr>
+<td><code>logic</code></td>
+<td><code>"and"</code></td>
+<td><code>"and"</code> requires all criteria; <code>"or"</code> keeps rows matching any criterion.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns</strong><br />
+Filtered <code>pandas.DataFrame</code>.</p>
+<p><strong>Typical workflow</strong></p>
+<div class="highlight"><pre><span></span><code><span class="n">df</span> <span class="o">=</span> <span class="n">xw</span><span class="o">.</span><span class="n">filterblobs</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;iteration&quot;</span><span class="p">,</span> <span class="n">minvals</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
+<span class="n">hot</span> <span class="o">=</span> <span class="n">xw</span><span class="o">.</span><span class="n">filterblobs</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;blob_kT&quot;</span><span class="p">,</span> <span class="n">minvals</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">maxvals</span><span class="o">=</span><span class="mf">8.0</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>Example</strong></p>
+<div class="highlight"><pre><span></span><code><span class="n">subset</span> <span class="o">=</span> <span class="n">xw</span><span class="o">.</span><span class="n">filterblobs</span><span class="p">(</span>
+    <span class="n">df</span><span class="p">,</span>
+    <span class="p">[</span><span class="s2">&quot;blob_kT&quot;</span><span class="p">,</span> <span class="s2">&quot;blob_norm&quot;</span><span class="p">],</span>
+    <span class="n">minvals</span><span class="o">=</span><span class="p">[</span><span class="mf">2.0</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
+    <span class="n">maxvals</span><span class="o">=</span><span class="p">[</span><span class="mf">8.0</span><span class="p">,</span> <span class="mf">1e-4</span><span class="p">],</span>
+<span class="p">)</span>
+</code></pre></div>
+<h2 id="simplefilterblobs"><code>simplefilterblobs()</code></h2>
+<div class="highlight"><pre><span></span><code><span class="n">xmcinter</span><span class="o">.</span><span class="n">wrangle</span><span class="o">.</span><span class="n">simplefilterblobs</span><span class="p">(</span>
+    <span class="n">inframe</span><span class="p">,</span>
+    <span class="n">colname</span><span class="p">,</span>
+    <span class="n">minval</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">maxval</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">quiet</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+<p><strong>Purpose</strong><br />
+Single-column helper used by <code>filterblobs()</code>.</p>
+<p><strong>Parameters</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>inframe</code></td>
+<td>required</td>
+<td>Input DataFrame.</td>
+</tr>
+<tr>
+<td><code>colname</code></td>
+<td>required</td>
+<td>Column to filter.</td>
+</tr>
+<tr>
+<td><code>minval</code></td>
+<td><code>None</code></td>
+<td>Inclusive lower bound. <code>None</code> uses the column minimum.</td>
+</tr>
+<tr>
+<td><code>maxval</code></td>
+<td><code>None</code></td>
+<td>Inclusive upper bound. <code>None</code> uses the column maximum.</td>
+</tr>
+<tr>
+<td><code>quiet</code></td>
+<td><code>False</code></td>
+<td>Suppress filter warnings when <code>True</code>.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns</strong><br />
+Filtered DataFrame.</p>
+<p><strong>Typical workflow</strong><br />
+Prefer <code>filterblobs()</code> unless you specifically need the simpler helper.</p>
+<div class="highlight"><pre><span></span><code><span class="n">cool</span> <span class="o">=</span> <span class="n">xw</span><span class="o">.</span><span class="n">simplefilterblobs</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;blob_kT&quot;</span><span class="p">,</span> <span class="n">maxval</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="filtercircle"><code>filtercircle()</code></h2>
+<div class="highlight"><pre><span></span><code><span class="n">xmcinter</span><span class="o">.</span><span class="n">wrangle</span><span class="o">.</span><span class="n">filtercircle</span><span class="p">(</span>
+    <span class="n">inframe</span><span class="p">,</span>
+    <span class="n">x</span><span class="o">=</span><span class="s2">&quot;blob_phi&quot;</span><span class="p">,</span>
+    <span class="n">y</span><span class="o">=</span><span class="s2">&quot;blob_psi&quot;</span><span class="p">,</span>
+    <span class="n">r</span><span class="o">=</span><span class="s2">&quot;blob_sigma&quot;</span><span class="p">,</span>
+    <span class="n">r0</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">x0</span><span class="o">=-</span><span class="mf">60.0</span><span class="p">,</span>
+    <span class="n">y0</span><span class="o">=</span><span class="mf">80.0</span><span class="p">,</span>
+    <span class="n">logic</span><span class="o">=</span><span class="s2">&quot;exclude&quot;</span><span class="p">,</span>
+    <span class="n">fraction</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">regname</span><span class="o">=</span><span class="s2">&quot;circle&quot;</span><span class="p">,</span>
+    <span class="n">use_ctypes</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">parallel</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">nproc</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+<p><strong>Purpose</strong><br />
+Filter blobs by a circular region in the XMC coordinate plane.</p>
+<p><strong>Parameters</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>inframe</code></td>
+<td>required</td>
+<td>Blob DataFrame.</td>
+</tr>
+<tr>
+<td><code>x</code></td>
+<td><code>"blob_phi"</code></td>
+<td>X-coordinate column.</td>
+</tr>
+<tr>
+<td><code>y</code></td>
+<td><code>"blob_psi"</code></td>
+<td>Y-coordinate column.</td>
+</tr>
+<tr>
+<td><code>r</code></td>
+<td><code>"blob_sigma"</code></td>
+<td>Blob size column or scalar radius.</td>
+</tr>
+<tr>
+<td><code>r0</code></td>
+<td><code>None</code></td>
+<td>Circular region radius.</td>
+</tr>
+<tr>
+<td><code>x0</code></td>
+<td><code>-60.0</code></td>
+<td>Circular region center x-coordinate.</td>
+</tr>
+<tr>
+<td><code>y0</code></td>
+<td><code>80.0</code></td>
+<td>Circular region center y-coordinate.</td>
+</tr>
+<tr>
+<td><code>logic</code></td>
+<td><code>"exclude"</code></td>
+<td><code>"exclude"</code> removes the region; <code>"include"</code> keeps the region.</td>
+</tr>
+<tr>
+<td><code>fraction</code></td>
+<td><code>True</code></td>
+<td>Add fractional contribution columns instead of only dropping rows.</td>
+</tr>
+<tr>
+<td><code>regname</code></td>
+<td><code>"circle"</code></td>
+<td>Prefix for generated region-fraction columns.</td>
+</tr>
+<tr>
+<td><code>use_ctypes</code></td>
+<td><code>True</code></td>
+<td>Use compiled Gaussian helper where available.</td>
+</tr>
+<tr>
+<td><code>parallel</code></td>
+<td><code>False</code></td>
+<td>Use multiprocessing for region fraction calculations.</td>
+</tr>
+<tr>
+<td><code>nproc</code></td>
+<td><code>3</code></td>
+<td>Number of processes when <code>parallel=True</code>.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns</strong><br />
+Filtered DataFrame or a DataFrame with region-fraction columns.</p>
+<p><strong>Example</strong></p>
+<div class="highlight"><pre><span></span><code><span class="n">inside</span> <span class="o">=</span> <span class="n">xw</span><span class="o">.</span><span class="n">filtercircle</span><span class="p">(</span>
+    <span class="n">df</span><span class="p">,</span>
+    <span class="n">x</span><span class="o">=</span><span class="s2">&quot;blob_phi&quot;</span><span class="p">,</span>
+    <span class="n">y</span><span class="o">=</span><span class="s2">&quot;blob_psi&quot;</span><span class="p">,</span>
+    <span class="n">r</span><span class="o">=</span><span class="s2">&quot;blob_sigma&quot;</span><span class="p">,</span>
+    <span class="n">x0</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+    <span class="n">y0</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+    <span class="n">r0</span><span class="o">=</span><span class="mf">60.0</span><span class="p">,</span>
+    <span class="n">logic</span><span class="o">=</span><span class="s2">&quot;include&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+<h2 id="weighted-statistics">Weighted Statistics</h2>
+<h3 id="weighted_median"><code>weighted_median()</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">xmcinter</span><span class="o">.</span><span class="n">wrangle</span><span class="o">.</span><span class="n">weighted_median</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>Purpose</strong><br />
+Compute a weighted median.</p>
+<p><strong>Parameters</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>data</code></td>
+<td>required</td>
+<td>Array-like values.</td>
+</tr>
+<tr>
+<td><code>weights</code></td>
+<td><code>None</code></td>
+<td>Optional weights. If <code>None</code>, behaves like an unweighted median.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns</strong><br />
+Scalar or array, depending on input.</p>
+<p><strong>Example</strong></p>
+<div class="highlight"><pre><span></span><code><span class="n">median_kT</span> <span class="o">=</span> <span class="n">xw</span><span class="o">.</span><span class="n">weighted_median</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;blob_kT&quot;</span><span class="p">],</span> <span class="n">weights</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;blob_norm&quot;</span><span class="p">])</span>
+</code></pre></div>
+<h3 id="weighted_std"><code>weighted_std()</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">xmcinter</span><span class="o">.</span><span class="n">wrangle</span><span class="o">.</span><span class="n">weighted_std</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ddof</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>Purpose</strong><br />
+Compute a weighted standard deviation.</p>
+<p><strong>Parameters</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>data</code></td>
+<td>required</td>
+<td>Array-like values.</td>
+</tr>
+<tr>
+<td><code>weights</code></td>
+<td><code>None</code></td>
+<td>Optional weights.</td>
+</tr>
+<tr>
+<td><code>ddof</code></td>
+<td><code>1.0</code></td>
+<td>Delta degrees of freedom for variance normalization.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example</strong></p>
+<div class="highlight"><pre><span></span><code><span class="n">sigma_kT</span> <span class="o">=</span> <span class="n">xw</span><span class="o">.</span><span class="n">weighted_std</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;blob_kT&quot;</span><span class="p">],</span> <span class="n">weights</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;blob_norm&quot;</span><span class="p">])</span>
+</code></pre></div>
+<h3 id="weighted_modes"><code>weighted_modes()</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">xmcinter</span><span class="o">.</span><span class="n">wrangle</span><span class="o">.</span><span class="n">weighted_modes</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">75</span><span class="p">,</span> <span class="n">logbins</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>Purpose</strong><br />
+Estimate modes from a weighted histogram.</p>
+<p><strong>Parameters</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>data</code></td>
+<td>required</td>
+<td>Array-like values.</td>
+</tr>
+<tr>
+<td><code>weights</code></td>
+<td><code>None</code></td>
+<td>Optional weights.</td>
+</tr>
+<tr>
+<td><code>bins</code></td>
+<td><code>75</code></td>
+<td>Histogram bin count or bin specification.</td>
+</tr>
+<tr>
+<td><code>logbins</code></td>
+<td><code>False</code></td>
+<td>Use logarithmic bins.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example</strong></p>
+<div class="highlight"><pre><span></span><code><span class="n">modes</span> <span class="o">=</span> <span class="n">xw</span><span class="o">.</span><span class="n">weighted_modes</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;blob_kT&quot;</span><span class="p">],</span> <span class="n">weights</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;blob_norm&quot;</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="mi">75</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="credible_region"><code>credible_region()</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">xmcinter</span><span class="o">.</span><span class="n">wrangle</span><span class="o">.</span><span class="n">credible_region</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">frac</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;HPD&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>Purpose</strong><br />
+Calculate a Bayesian credible region from a posterior sample.</p>
+<p><strong>Parameters</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>data</code></td>
+<td>required</td>
+<td>Posterior samples.</td>
+</tr>
+<tr>
+<td><code>weights</code></td>
+<td><code>None</code></td>
+<td>Optional sample weights.</td>
+</tr>
+<tr>
+<td><code>frac</code></td>
+<td><code>0.9</code></td>
+<td>Credible-region fraction.</td>
+</tr>
+<tr>
+<td><code>method</code></td>
+<td><code>"HPD"</code></td>
+<td>Credible-region method.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example</strong></p>
+<div class="highlight"><pre><span></span><code><span class="n">region</span> <span class="o">=</span> <span class="n">xw</span><span class="o">.</span><span class="n">credible_region</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;blob_kT&quot;</span><span class="p">],</span> <span class="n">weights</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;blob_norm&quot;</span><span class="p">],</span> <span class="n">frac</span><span class="o">=</span><span class="mf">0.9</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="histogram-helpers">Histogram Helpers</h2>
+<h3 id="make_histogram"><code>make_histogram()</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">xmcinter</span><span class="o">.</span><span class="n">wrangle</span><span class="o">.</span><span class="n">make_histogram</span><span class="p">(</span>
+    <span class="n">dataseries</span><span class="p">,</span>
+    <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+    <span class="n">logbins</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">datarange</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">density</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">iterations</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">centers</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">normalize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+<p><strong>Purpose</strong><br />
+Create a histogram with optional weights, log bins, and iteration-based error
+bars.</p>
+<p><strong>Parameters</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dataseries</code></td>
+<td>required</td>
+<td>Data values to histogram.</td>
+</tr>
+<tr>
+<td><code>weights</code></td>
+<td><code>None</code></td>
+<td>Optional weights for each value.</td>
+</tr>
+<tr>
+<td><code>bins</code></td>
+<td><code>50</code></td>
+<td>Bin count, bin edges, or NumPy-compatible bin spec.</td>
+</tr>
+<tr>
+<td><code>logbins</code></td>
+<td><code>False</code></td>
+<td>Use logarithmically spaced bins.</td>
+</tr>
+<tr>
+<td><code>datarange</code></td>
+<td><code>None</code></td>
+<td>Optional histogram range.</td>
+</tr>
+<tr>
+<td><code>density</code></td>
+<td><code>False</code></td>
+<td>Return density instead of counts.</td>
+</tr>
+<tr>
+<td><code>iterations</code></td>
+<td><code>None</code></td>
+<td>Optional per-row iterations for error estimates.</td>
+</tr>
+<tr>
+<td><code>centers</code></td>
+<td><code>False</code></td>
+<td>Return bin centers instead of edges where supported.</td>
+</tr>
+<tr>
+<td><code>normalize</code></td>
+<td><code>False</code></td>
+<td>Normalize histogram values.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns</strong><br />
+Usually a tuple of histogram values, errors, and bin edges.</p>
+<p><strong>Example</strong></p>
+<div class="highlight"><pre><span></span><code><span class="n">y</span><span class="p">,</span> <span class="n">yerr</span><span class="p">,</span> <span class="n">edges</span> <span class="o">=</span> <span class="n">xw</span><span class="o">.</span><span class="n">make_histogram</span><span class="p">(</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;blob_kT&quot;</span><span class="p">],</span>
+    <span class="n">weights</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;blob_norm&quot;</span><span class="p">],</span>
+    <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+<h3 id="normalize_histogram"><code>normalize_histogram()</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">xmcinter</span><span class="o">.</span><span class="n">wrangle</span><span class="o">.</span><span class="n">normalize_histogram</span><span class="p">(</span><span class="n">histy</span><span class="p">,</span> <span class="n">yerrors</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>Purpose</strong><br />
+Normalize histogram values and optionally their errors.</p>
+<p><strong>Parameters</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>histy</code></td>
+<td>required</td>
+<td>Histogram y values.</td>
+</tr>
+<tr>
+<td><code>yerrors</code></td>
+<td><code>None</code></td>
+<td>Optional histogram errors to scale with <code>histy</code>.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example</strong></p>
+<div class="highlight"><pre><span></span><code><span class="n">y_norm</span><span class="p">,</span> <span class="n">yerr_norm</span> <span class="o">=</span> <span class="n">xw</span><span class="o">.</span><span class="n">normalize_histogram</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">yerr</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="iter_err"><code>iter_err()</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">xmcinter</span><span class="o">.</span><span class="n">wrangle</span><span class="o">.</span><span class="n">iter_err</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">param</span><span class="p">,</span> <span class="n">function</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>Purpose</strong><br />
+Estimate variation in a statistic across iterations.</p>
+<p><strong>Parameters</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>df</code></td>
+<td>required</td>
+<td>DataFrame with an <code>iteration</code> column.</td>
+</tr>
+<tr>
+<td><code>param</code></td>
+<td>required</td>
+<td>Parameter column to summarize.</td>
+</tr>
+<tr>
+<td><code>function</code></td>
+<td>required</td>
+<td>Statistic function to apply per iteration.</td>
+</tr>
+<tr>
+<td><code>weights</code></td>
+<td><code>None</code></td>
+<td>Optional weight column or values.</td>
+</tr>
+<tr>
+<td><code>*args</code>, <code>**kwargs</code></td>
+<td>none</td>
+<td>Extra arguments passed to <code>function</code>.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example</strong></p>
+<div class="highlight"><pre><span></span><code><span class="n">err</span> <span class="o">=</span> <span class="n">xw</span><span class="o">.</span><span class="n">iter_err</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;blob_kT&quot;</span><span class="p">,</span> <span class="n">xw</span><span class="o">.</span><span class="n">weighted_median</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="s2">&quot;blob_norm&quot;</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="spectral-subset-helpers">Spectral Subset Helpers</h2>
+<h3 id="make_spectrum"><code>make_spectrum()</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">xmcinter</span><span class="o">.</span><span class="n">wrangle</span><span class="o">.</span><span class="n">make_spectrum</span><span class="p">(</span>
+    <span class="n">df</span><span class="p">,</span>
+    <span class="n">runpath</span><span class="o">=</span><span class="s2">&quot;../&quot;</span><span class="p">,</span>
+    <span class="n">suffix</span><span class="o">=</span><span class="s2">&quot;99999&quot;</span><span class="p">,</span>
+    <span class="n">oversim</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+    <span class="n">bins</span><span class="o">=</span><span class="mf">0.03</span><span class="p">,</span>
+    <span class="n">xlog</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">logbins</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">datarange</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">fixed_nH</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+<p><strong>Purpose</strong><br />
+Create a spectrum from a selected set of blobs. This function can call legacy
+XMC-style file paths and is more specialized than ordinary plotting.</p>
+<p><strong>Parameters</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>df</code></td>
+<td>required</td>
+<td>Blob subset DataFrame.</td>
+</tr>
+<tr>
+<td><code>runpath</code></td>
+<td><code>"../"</code></td>
+<td>XMC run directory.</td>
+</tr>
+<tr>
+<td><code>suffix</code></td>
+<td><code>"99999"</code></td>
+<td>Suffix for temporary/generated deconvolution-style files.</td>
+</tr>
+<tr>
+<td><code>oversim</code></td>
+<td><code>"auto"</code></td>
+<td>Oversimulation factor or <code>"auto"</code> to infer it.</td>
+</tr>
+<tr>
+<td><code>bins</code></td>
+<td><code>0.03</code></td>
+<td>Spectrum histogram bins or bin size.</td>
+</tr>
+<tr>
+<td><code>xlog</code></td>
+<td><code>False</code></td>
+<td>Use logarithmic x-axis interpretation.</td>
+</tr>
+<tr>
+<td><code>logbins</code></td>
+<td><code>None</code></td>
+<td>Use logarithmic bins; <code>None</code> follows <code>xlog</code>.</td>
+</tr>
+<tr>
+<td><code>datarange</code></td>
+<td><code>None</code></td>
+<td>Optional histogram range.</td>
+</tr>
+<tr>
+<td><code>fixed_nH</code></td>
+<td><code>None</code></td>
+<td>Optional fixed absorption column for spectrum generation.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example</strong></p>
+<div class="highlight"><pre><span></span><code><span class="n">spec</span> <span class="o">=</span> <span class="n">xw</span><span class="o">.</span><span class="n">make_spectrum</span><span class="p">(</span><span class="n">subset</span><span class="p">,</span> <span class="n">runpath</span><span class="o">=</span><span class="n">run</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="s2">&quot;99999&quot;</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="normclean"><code>normclean()</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">xmcinter</span><span class="o">.</span><span class="n">wrangle</span><span class="o">.</span><span class="n">normclean</span><span class="p">(</span>
+    <span class="n">df</span><span class="p">,</span>
+    <span class="n">nHcol</span><span class="o">=</span><span class="s2">&quot;blob_nH&quot;</span><span class="p">,</span>
+    <span class="n">kTcol</span><span class="o">=</span><span class="s2">&quot;blob_kT&quot;</span><span class="p">,</span>
+    <span class="n">normcol</span><span class="o">=</span><span class="s2">&quot;blob_norm&quot;</span><span class="p">,</span>
+    <span class="n">itercol</span><span class="o">=</span><span class="s2">&quot;iteration&quot;</span><span class="p">,</span>
+    <span class="n">normthreshs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">parallel</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">nproc</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+<p><strong>Purpose</strong><br />
+Remove low-temperature/high-absorption blobs using normalization criteria. This
+is an advanced cleaning helper for specific models that include <code>nH</code>, <code>kT</code>, and
+norm columns.</p>
+<p><strong>Parameters</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>df</code></td>
+<td>required</td>
+<td>Blob DataFrame.</td>
+</tr>
+<tr>
+<td><code>nHcol</code></td>
+<td><code>"blob_nH"</code></td>
+<td>Absorption column.</td>
+</tr>
+<tr>
+<td><code>kTcol</code></td>
+<td><code>"blob_kT"</code></td>
+<td>Temperature column.</td>
+</tr>
+<tr>
+<td><code>normcol</code></td>
+<td><code>"blob_norm"</code></td>
+<td>Normalization column.</td>
+</tr>
+<tr>
+<td><code>itercol</code></td>
+<td><code>"iteration"</code></td>
+<td>Iteration column.</td>
+</tr>
+<tr>
+<td><code>normthreshs</code></td>
+<td><code>None</code></td>
+<td>Threshold configuration for norm cleaning.</td>
+</tr>
+<tr>
+<td><code>parallel</code></td>
+<td><code>False</code></td>
+<td>Use multiprocessing.</td>
+</tr>
+<tr>
+<td><code>nproc</code></td>
+<td><code>4</code></td>
+<td>Number of processes when <code>parallel=True</code>.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example</strong></p>
+<div class="highlight"><pre><span></span><code><span class="n">cleaned</span> <span class="o">=</span> <span class="n">xw</span><span class="o">.</span><span class="n">normclean</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">nHcol</span><span class="o">=</span><span class="s2">&quot;blob_nH&quot;</span><span class="p">,</span> <span class="n">kTcol</span><span class="o">=</span><span class="s2">&quot;blob_kT&quot;</span><span class="p">,</span> <span class="n">normcol</span><span class="o">=</span><span class="s2">&quot;blob_norm&quot;</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="line-emission-helpers">Line Emission Helpers</h2>
+<h3 id="line_emissivities-and-blob_line_photons"><code>line_emissivities()</code> and <code>blob_line_photons()</code></h3>
+<div class="highlight"><pre><span></span><code><span class="n">xmcinter</span><span class="o">.</span><span class="n">wrangle</span><span class="o">.</span><span class="n">line_emissivities</span><span class="p">(</span><span class="n">kT</span><span class="p">,</span> <span class="n">tolerance</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="o">**</span><span class="n">fetchargs</span><span class="p">)</span>
+<span class="n">xmcinter</span><span class="o">.</span><span class="n">wrangle</span><span class="o">.</span><span class="n">blob_line_photons</span><span class="p">(</span><span class="n">kT</span><span class="p">,</span> <span class="n">volume</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">tolerance</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="o">**</span><span class="n">fetchargs</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>Purpose</strong><br />
+Estimate line emissivity or line photon output for gas at a given temperature.</p>
+<p><strong>Parameters</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>kT</code></td>
+<td>required</td>
+<td>Gas temperature in keV.</td>
+</tr>
+<tr>
+<td><code>volume</code></td>
+<td>required for <code>blob_line_photons()</code></td>
+<td>Blob volume.</td>
+</tr>
+<tr>
+<td><code>time</code></td>
+<td><code>None</code></td>
+<td>Optional exposure/time scale for photon estimate.</td>
+</tr>
+<tr>
+<td><code>tolerance</code></td>
+<td><code>0.05</code> / <code>0.01</code></td>
+<td>Temperature matching tolerance.</td>
+</tr>
+<tr>
+<td><code>**fetchargs</code></td>
+<td>none</td>
+<td>Extra line-list filters passed through to line-fetching helpers.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example</strong></p>
+<div class="highlight"><pre><span></span><code><span class="n">lines</span> <span class="o">=</span> <span class="n">xw</span><span class="o">.</span><span class="n">line_emissivities</span><span class="p">(</span><span class="n">kT</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="n">photons</span> <span class="o">=</span> <span class="n">xw</span><span class="o">.</span><span class="n">blob_line_photons</span><span class="p">(</span><span class="n">kT</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">volume</span><span class="o">=</span><span class="mf">1e55</span><span class="p">)</span>
+</code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.indexes", "content.code.copy", "toc.follow"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
