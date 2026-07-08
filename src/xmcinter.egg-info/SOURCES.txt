@@ -11,6 +11,7 @@ src/xmcinter/xmcmap.py
 src/xmcinter.egg-info/PKG-INFO
 src/xmcinter.egg-info/SOURCES.txt
 src/xmcinter.egg-info/dependency_links.txt
+src/xmcinter.egg-info/requires.txt
 src/xmcinter.egg-info/top_level.txt
 src/xmcinter/idl_maps/__init__.py
 src/xmcinter/idl_maps/calculate_map.py

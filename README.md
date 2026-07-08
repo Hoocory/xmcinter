@@ -8,7 +8,9 @@ The xmcinter python package requires the following third-party packages:
 - bokeh
 - scipy
 
-#installation
+If you do not have these packages using "pip install ." will automatically download these packages. 
+
+#Updated Installation Instructions
 1) download the repository
 2) cd into the main directory 
 3) pip install .
@@ -16,34 +18,7 @@ The xmcinter python package requires the following third-party packages:
 If you are using jupyter notebooks you'll be able to use xmcinter from by using 
 ```import xmcinter.xmcfiles```
 
-Python 3 setup notes:
-- Install the Python dependencies with:
 
-  pip install -r requirements.txt
-
-- Add the parent directory of xmcinter to PYTHONPATH. For example, if this
-  checkout is /Users/kakigi/Documents/xmcinter:
-
-  export PYTHONPATH=/Users/kakigi/Documents:$PYTHONPATH
-
-- Run the import smoke test with:
-
-  python scripts/smoke_imports.py
-
-- The checked-in gaussian.so may not match your operating system or CPU.
-  Rebuild it locally before using make_map(..., cint=True), for example:
-
-  clang -shared -fPIC -o gaussian.so gaussian.c
-
-  Or pass cint=False to make_map().
-
-- IDL map wrappers, external xmc execution, DS9, XMM-SAS tools, and real XMC
-  run products are still external/manual dependencies.
-
-You may need to add xmcinter's parent directory to your PYTHONPATH, e.g.,
-if you placed xmcinter inside ~/python_programs/,
-
-setenv PYTHONPATH ~/python_programs/:$PYTHONPATH
 
 ###################################################################
 At the beginning of analysis python session, some common imports are:
