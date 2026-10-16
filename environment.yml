@@ -1,0 +1,34 @@
+name: xmcinter
+
+channels:
+  - https://heasarc.gsfc.nasa.gov/FTP/software/conda/
+  - conda-forge
+  - nodefaults
+
+dependencies:
+  # Current HEASoft/XSPEC releases; allow newer compatible releases.
+  - python>=3.14
+  - heasoft>=6.37.1
+  - xspec>=13.0.1
+
+  # Let Conda select current compatible scientific packages.
+  - numpy
+  - pandas
+  - scipy
+  - astropy
+  - matplotlib
+  - bokeh
+  - pyvista
+
+  # Notebooks and Python package installation.
+  - ipython
+  - jupyter
+  - ipykernel
+  - pip
+
+  # Install this local xmcinter repository.
+  - pip:
+      - -e .
+
+# HEASoft 6.37+ downloads spectral model data separately.
+# After activation, fetch APEC data once with: ftgetmodeldata apec latest

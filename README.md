@@ -43,7 +43,8 @@ Usage Notes:
 
 - To use the fastest (and default) method for making maps 
   (via xmcinter.xmcmap.make_map), it is necessary to compile the gaussian.c
-  function on your local machine, e.g. on linux:
+  function on your local machine, e.g. on linux. This should have been installed automatically
+  during the pip install, but if the gaussian.so is missing or not working correctly please use:
 
   gcc -shared -o gaussian.so -fPIC gaussian.c
 
